@@ -143,7 +143,7 @@ class ContractType extends Model
 
             ->first();
 
-        if ($contract_type === null) {
+        if ($contract_type) {
             return 1;
         }
         return 0;
@@ -153,12 +153,13 @@ class ContractType extends Model
      * Verifier  si l' ajout est valide '
      *
      * @param string $name
+     * @param ContractType $old_contrattype
 
 
      * @return  array
      */
 
-    public static function isValid($name )
+    public static function isValid($name,  $old_contrattype = null)
     {
 
         $data = array();
@@ -171,12 +172,18 @@ class ContractType extends Model
         // Verification validite des données
 
 
-        if (isEmpty($name)) {
-            $erreurName = "Le libellé   est obligatoire" ;
+        if ($name=='') {
+            $erreurName = "Le name   est obligatoire" ;
         }
 
-        elseif (ContractType::isUnique($name)) {
-            $erreurName  = "Ce ContractType  existe dejà " ;
+        elseif (
+            $old_contrattype == null ||
+            $old_contrattype->name != $name
+
+        ){
+            $erreurName = (ContractType::isUnique($name))?'Ce name existe déja ':'';
+
+            $isValid = (ContractType::isUnique($name))?false:true;
         }
 
 

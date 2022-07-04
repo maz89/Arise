@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assignment;
-use App\Models\Business;
 use App\Models\Contract;
+use App\Types\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -12,68 +11,80 @@ class ContractController extends Controller
 {
 
 
+   private      $active;
+
+    public function __construct()
+    {
+
+        $this->active = Menu::CONTRACT;
+    }
+
 
     /**
-     * Affiche la  liste des Familys
+     * Affiche la  liste des Contracts
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
 
-        $contracts = Contract::allcontractActifs();
+        $contracts = Contract::allContractActifs();
 
-        return view('contract.index')->with('contracts',$contracts);
+        return view('contract.index')->with(
+            [
+                'contracts' => $contracts,
+                 'active' => $this->active
 
-
-    }
-
-
-    /**
-     * Affiche le formulaire d'ajout
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function add()
-    {
+            ]
 
 
-
-        return view('contract.add');
+        );
 
 
     }
 
 
 
+
+
+
     /**
-     * Ajouter une nouvelle Family   .
+     * Ajouter une nouvelle Contract   .
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store( Request $request)
     {
+
+
+
         $data = Contract::isValid(
             $request->date_start,
             $request->date_end,
-            $request->probation,
-            $request->contract_type_id
+            (int)    $request->contract_type_id,
+            (int)    $request->employe_id
+
+
 
         );
 
         if ($data['isValid'])
         {
-            // Enregistrement du Family
+            // Enregistrement du Contract
 
-            Contract::addcontract(
+            Contract::addContract(
                 $request->date_start,
                 $request->date_end,
-                $request->probation,
-                $request->contract_type_id
+               $request->date_start_probation,
+                   $request->date_end_probation,
 
-            );
+                (int)    $request->contract_type_id,
+                (int)    $request->employe_id,
+
+
+
+            ) ;
 
         }
 
@@ -83,7 +94,7 @@ class ContractController extends Controller
 
 
     /**
-     * Afficher  un Family
+     * Afficher  un Contract
      *
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
@@ -91,7 +102,9 @@ class ContractController extends Controller
     public function edit ($id)
     {
 
-        $data = Contract::recherchecontractById($id);
+        $data = Contract::rechercheContractById($id);
+
+
 
         return response()->json($data);
 
@@ -100,7 +113,7 @@ class ContractController extends Controller
 
 
     /**
-     * Update  un Family
+     * Update  un Contract
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -108,27 +121,32 @@ class ContractController extends Controller
      */
     public function update( Request $request,  $id)
     {
-
+        $old_contract = Contract::rechercheContractById($id);
 
         $data = Contract::isValid(
             $request->date_start,
             $request->date_end,
-            $request->probation,
-            $request->contract_type_id
-
+            (int)    $request->contract_type_id,
+            (int)    $request->employe_id,
+            $old_contract
 
         );
 
+
         if ($data['isValid'])
         {
-            // UpDate du Family
-            Contract::updatecontract(
+            // UpDate du Contract
+            Contract::updateContract(
                 $request->date_start,
                 $request->date_end,
-                $request->probation,
-                $request->contract_type_id,
-                $id
-            );
+                $request->date_start_probation,
+                $request->date_end_probation,
+
+                (int)    $request->contract_type_id,
+                (int)    $request->employe_id,
+
+
+                $id );
 
 
         }
@@ -140,7 +158,7 @@ class ContractController extends Controller
 
 
     /**
-     * Supprimer   une  Family scolaire .
+     * Supprimer   une  Contract scolaire .
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -148,16 +166,17 @@ class ContractController extends Controller
      */
     public function delete(Request $request,$id)
     {
-        $delete = Contract::recherchecontractById($id);
+        $delete = Contract::deleteContract($id);
 
         // check data deleted or not
         if ($delete == 1) {
             $success = true;
-            $message = "Successful deletion";
+            $message = "Suppression effectuée avec succès ";
         } else {
             $success = true;
-            $message = "This business does not exist";
+            $message = "Le Contract  n' est pas trouvé ";
         }
+
 
         //  return response
         return response()->json([
@@ -165,10 +184,6 @@ class ContractController extends Controller
             'message' => $message,
         ]);
     }
-
-
-
-
 
 
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
-use App\Models\Business;
+use App\Types\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -11,9 +11,17 @@ class AssignmentController extends Controller
 {
 
 
+   private      $active;
+
+    public function __construct()
+    {
+
+        $this->active = Menu::ASSIGNMENT;
+    }
+
 
     /**
-     * Affiche la  liste des Familys
+     * Affiche la  liste des Assignments
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,56 +30,62 @@ class AssignmentController extends Controller
 
         $assignments = Assignment::allAssignmentActifs();
 
-        return view('assignment.index')->with('assignments',$assignments);
+        return view('assignment.index')->with(
+            [
+                'assignments' => $assignments,
+                 'active' => $this->active
+
+            ]
+
+
+        );
 
 
     }
 
 
-    /**
-     * Affiche
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function add()
-    {
 
 
-
-        return view('assignment.index');
-
-
-    }
 
 
     /**
-     * Ajouter une nouvelle Family   .
+     * Ajouter une nouvelle Assignment   .
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store( Request $request)
     {
+
+
         $data = Assignment::isValid(
             $request->date_start,
             $request->date_end,
-            $request->employe_id,
-            $request->position_id
+            (int)     $request->employe_id,
+            (int)   $request->position_id,
+
 
 
         );
 
         if ($data['isValid'])
         {
-            // Enregistrement du Family
+            // Enregistrement du Assignment
 
             Assignment::addAssignment(
                 $request->date_start,
                 $request->date_end,
-                $request->employe_id,
-                $request->position_id
+                (int)    $request->employe_id,
+                (int)   $request->position_id,
+                (int)   $request->department_id,
+                (int)   $request->is_manager,
 
-            );
+                (int)   $request->business_id,
+
+
+
+
+            ) ;
 
         }
 
@@ -81,7 +95,7 @@ class AssignmentController extends Controller
 
 
     /**
-     * Afficher  un Family
+     * Afficher  un Assignment
      *
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
@@ -91,6 +105,8 @@ class AssignmentController extends Controller
 
         $data = Assignment::rechercheAssignmentById($id);
 
+
+
         return response()->json($data);
 
 
@@ -98,7 +114,7 @@ class AssignmentController extends Controller
 
 
     /**
-     * Update  un Family
+     * Update  un Assignment
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -106,27 +122,32 @@ class AssignmentController extends Controller
      */
     public function update( Request $request,  $id)
     {
-
+        $old_Assignment = Assignment::rechercheAssignmentById($id);
 
         $data = Assignment::isValid(
             $request->date_start,
             $request->date_end,
-            $request->employe_id,
-            $request->position_id
-
+            (int)     $request->employe_id,
+            (int)   $request->position_id,
+            $old_Assignment
 
         );
 
+
         if ($data['isValid'])
         {
-            // UpDate du Family
+            // UpDate du Assignment
             Assignment::updateAssignment(
                 $request->date_start,
                 $request->date_end,
-                $request->employe_id,
-                $request->position_id,
-                $id
-            );
+                (int)    $request->employe_id,
+                (int)   $request->position_id,
+                (int)   $request->department_id,
+                (int)   $request->is_manager,
+                (int)   $request->business_id,
+
+
+                $id );
 
 
         }
@@ -138,7 +159,7 @@ class AssignmentController extends Controller
 
 
     /**
-     * Supprimer   une  Family scolaire .
+     * Supprimer   une  Assignment scolaire .
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -146,16 +167,17 @@ class AssignmentController extends Controller
      */
     public function delete(Request $request,$id)
     {
-        $delete = Assignment::rechercheAssignmentById($id);
+        $delete = Assignment::deleteAffectation($id);
 
         // check data deleted or not
         if ($delete == 1) {
             $success = true;
-            $message = "Successful deletion";
+            $message = "Suppression effectuée avec succès ";
         } else {
             $success = true;
-            $message = "This business does not exist";
+            $message = "L'  Assignment  n' est pas trouvé ";
         }
+
 
         //  return response
         return response()->json([
@@ -163,10 +185,6 @@ class AssignmentController extends Controller
             'message' => $message,
         ]);
     }
-
-
-
-
 
 
 }

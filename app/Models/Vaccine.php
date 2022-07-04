@@ -24,8 +24,8 @@ class Vaccine extends Model
      */
     protected $fillable = [
         'name',
-        'status_Vaccine',
-        'Vaccine_type_id',
+        'nb_doses',
+        'disease_id',
 
         'status',
 
@@ -52,19 +52,19 @@ class Vaccine extends Model
      * Ajouter une Vaccine
      *
      * @param  string $name
-     * @param  string $status_Vaccine
-     * @param  string $vaccine_type_id
+     * @param  integer $nb_doses
+     * @param  integer $disease_id
  * @return  Vaccine
      */
 
-    public static function addVaccine($name, $status_Vaccine, $vaccine_type_id)
+    public static function addVaccine($name, $nb_doses, $disease_id)
     {
 
 
         $vaccine = new Vaccine();
         $vaccine->name = $name;
-        $vaccine->status_Vaccine = $status_Vaccine;
-        $vaccine->type_vacin_id=$vaccine_type_id;
+        $vaccine->nb_doses = $nb_doses;
+        $vaccine->disease_id=$disease_id;
 
 
         $vaccine->created_at = Carbon::now();
@@ -92,20 +92,20 @@ class Vaccine extends Model
      * Update d'un Vaccine
      *
      * @param  string $name
-     * @param  string $status_Vaccine
-     * @param  string $vaccine_type_id
+     * @param  string $nb_doses
+     * @param  string $disease_id
  * @param int $id
      * @return  Vaccine
      */
 
-    public static function updateVaccine($name, $status_Vaccine, $vaccine_type_id,   $id)
+    public static function updateVaccine($name, $nb_doses, $disease_id,   $id)
     {
 
 
         return   $vaccine = Vaccine::findOrFail($id)->update([
             'name' => $name,
-            'status_Vaccine' => $status_Vaccine,
-            'Vaccine_type_id'=> $vaccine_type_id,
+            'nb_doses' => $nb_doses,
+            'disease_id'=> $disease_id,
 
             'id' => $id,
 
@@ -142,19 +142,19 @@ class Vaccine extends Model
      *
 
      * @param  string $name
-     * @param  string $status_Vaccine
-     * @param  string $vaccine_type_id
+     * @param  string $nb_doses
+     * @param  string $disease_id
 
      * @return  boolean
      */
 
-    public static function isUnique($name, $status_Vaccine, $vaccine_type_id)
+    public static function isUnique($name, $nb_doses, $disease_id)
     {
 
         $vaccine = Vaccine::where('status', '!=', TypeStatus::SUPPRIME)
-            ->where('status_Vaccine', '=', $status_Vaccine)
+            ->where('nb_doses', '=', $nb_doses)
             ->where('name', '=', $name)
-            ->where('Vaccine_type_id', '=', $vaccine_type_id)
+            ->where('disease_id', '=', $disease_id)
 
             ->first();
 
@@ -172,45 +172,60 @@ class Vaccine extends Model
      * Verifier  si l' ajout est valide '
      *
      * @param  string $name
-     * @param  string $status_Vaccine
-     * @param  string $vaccine_type_id
+     * @param  string $nb_doses
+     * @param  string $disease_id
+     * @param  Vaccine $old_vaccine
 
 
 
      * @return  array
      */
 
-    public static function isValid($name, $status_Vaccine, $vaccine_type_id )
+    public static function isValid($name, $nb_doses, $disease_id,  $old_vaccine=null)
     {
 
         $data = array();
 
         $isValid = false;
         $erreurName = '';
-        $erreurStatus_Vaccine = '';
-        $erreurVaccine_type_id= '';
+        $erreurnb_doses = '';
+        $erreurdisease_id= '';
 
 
 
         // Verification validite des données
 
 
-        if (isEmpty($name)) {
+        if ($name === '') {
             $erreurName = "Le name est obligatoire" ;
         }
-        elseif (isEmpty($vaccine_type_id )) {
-            $erreurVaccine_type_id = "Le type de Vaccine est obligatoire " ;
+        elseif ($disease_id ===0 ) {
+            $erreurdisease_id = "La maladie  est obligatoire " ;
         }
-        elseif (Vaccine::isUnique($name, $status_Vaccine, $vaccine_type_id )) {
-            $erreurName = "Ce Vaccine existe   dejà " ;
+
+        elseif ($nb_doses ===0 ) {
+            $erreurnb_doses = "Le nombre de doses   est obligatoire " ;
         }
+
+        elseif (
+            $old_vaccine == null ||
+            $old_vaccine->name !=$name ||
+            $old_vaccine->nb_doses !=$nb_doses ||
+            $old_vaccine->name !=$disease_id
+
+        ){
+            $erreurName = (Vaccine::isUnique($name, $nb_doses, $disease_id))?'Ce vaccin existe déja ':'';
+
+            $isValid = (Vaccine::isUnique($name, $nb_doses, $disease_id))?false:true;
+        }
+
 
 
         else {
 
             $erreurName = '';
-            $erreurStatus_Vaccine = '';
-            $erreurVaccine_type_id='';
+            $erreurnb_doses = '';
+            $erreurdisease_id='';
 
 
             $isValid = true;
@@ -221,8 +236,8 @@ class Vaccine extends Model
             'isValid' => $isValid,
 
             'erreurname' => $erreurName,
-            'erreurstatus_Vaccine' => $erreurStatus_Vaccine,
-            'erreurVaccine_type_id' => $erreurVaccine_type_id,
+            'erreurnb_doses' => $erreurnb_doses,
+            'erreurdisease_id' => $erreurdisease_id,
 
 
 
@@ -232,11 +247,11 @@ class Vaccine extends Model
     /**
      * Obtenir le type lié au Vaccine
      */
-    public function typeVaccine ()
+    public function disease ()
     {
 
 
-        return $this->belongsTo(VaccineType::class, 'vaccine_type_id');
+        return $this->belongsTo(Disease::class, 'disease_id');
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Types\StatutContrat;
 use App\Types\TypeStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,8 +20,11 @@ class Contract extends Model
     protected $fillable = [
         'date_start',
         'date_end',
-        'probation',
+        'date_start_probation',
+        'date_end_probation',
+        'status_contract',
         'contract_type_id',
+        'employe_id',
 
     ];
 
@@ -49,18 +53,24 @@ class Contract extends Model
      *
      * @param date $date_start
      * @param date $date_end
-     * @param string $probation
+     * @param date $date_start_probation
+     * @param date $date_end_probation
      * @param integer $contract_type_id
+     * @param integer $employe_id
      * @return Contract
      */
 
-    public static function addcontract($date_start, $date_end, $probation , $contract_type_id)
+    public static function addcontract($date_start, $date_end, $date_start_probation , $date_end_probation,
+                                         $contract_type_id,$employe_id)
     {
         $contract = new Contract();
         $contract->date_start = $date_start;
         $contract->date_end = $date_end;
-        $contract->probation = $probation;
+        $contract->date_start_probation = $date_start_probation;
+        $contract->date_end_probation = $date_end_probation;
+        $contract->status_contract = StatutContrat::EN_COURS;
         $contract->contract_type_id = $contract_type_id;
+        $contract->employe_id = $employe_id;
 
         $contract->created_at = Carbon::now();
 
@@ -78,29 +88,35 @@ class Contract extends Model
     public static function recherchecontractById($id)
     {
 
-        return $contract = Contract::enddOrFail($id);
+        return $contract = Contract::findOrFail($id);
     }
 
     /**
      * Update d'un Contract
-     * @param string $date_start
-     * @param string $date_end
-     * @param string $probation
-     * @param string $contract_type_id
+     * @param date $date_start
+     * @param date $date_end
+     * @param date $date_start_probation
+     * @param date $date_end_probation
+     * @param integer $contract_type_id
+     * @param integer $employe_id
      * @param int $id
      * @return  Contract
      */
 
-    public static function updatecontract($date_start, $date_end, $probation, $contract_type_id, $id)
+    public static function updatecontract($date_start, $date_end, $date_start_probation , $date_end_probation,
+                                           $contract_type_id,$employe_id,
+                                          $id)
     {
 
 
-        return $contract = Contract::enddOrFail($id)->update([
+        return $contract = Contract::findOrFail($id)->update([
 
             'date_start' => $date_start,
             'date_end' => $date_end,
-            'probation' => $probation,
+            'date_start_probation' => $date_start_probation,
+            'date_end_probation' => $date_end_probation,
             'contract_type_id' => $contract_type_id,
+            'employe_id' => $employe_id,
 
             'id' => $id,
 
@@ -119,7 +135,7 @@ class Contract extends Model
     public static function deletecontract($id)
     {
 
-        $contract = Contract::enddOrFail($id)->update([
+        $contract = Contract::findOrFail($id)->update([
             'status' => TypeStatus::SUPPRIME
 
         ]);
@@ -134,12 +150,14 @@ class Contract extends Model
      * Verification de la validité de l'ajout
      * @param string $date_start
      * @param string $date_end
-     * @param string $probation
-     * @param string $contract_type_id
+
+     * @param integer $contract_type_id
+     * @param integer $employe_id
+     * @param Contract $old_contract
      * @return  array
      */
 
-    public static function isValid($date_start, $date_end, $probation, $contract_type_id)
+    public static function isValid($date_start, $date_end,  $contract_type_id,$employe_id,$old_contract = null )
     {
 
         $data = array();
@@ -147,25 +165,46 @@ class Contract extends Model
         $isValid = false;
         $erreurDate_start = '';
         $erreurDate_end = '';
-        //  $erreurprobation = '';
+        $erreurEmploye = '';
+
         $erreurcontract_type_id = '';
 
 
         // Verification de la validité des données
 
 
-        if (isEmpty($date_start)) {
+        if ($date_start ==='') {
             $erreurDate_start = "La date de début est obligatoire";
-        }elseif (isEmpty($contract_type_id)) {
+        }elseif ($contract_type_id === 0) {
             $erreurcontract_type_id = "Le type de contract est obligatoire";
-        } elseif (Contract::isUnique($date_start,$date_end, $probation, $contract_type_id)) {
-            $erreurcontract_type_id = "Ce Contract  existe dejà ";
+        }
+    elseif ($date_end === '') {
+        $erreurDate_end = "La date de  fin  est obligatoire";
+}
+        elseif ($employe_id === 0) {
+            $erreurEmploye = "Le choix de l ' employé   est obligatoire";
+        }
+
+
+
+
+        elseif (
+            $old_contract == null ||
+            $old_contract->date_start !=$date_start ||
+            $old_contract->date_end !=$date_end ||
+            $old_contract->contract_type_id !=$contract_type_id
+
+        ){
+            $erreurEmploye = (Contract::isUnique($date_start, $date_end, $contract_type_id, $employe_id))?'Ce contract  existe déja ':'';
+
+            $isValid = (Contract::isUnique($date_start, $date_end, $contract_type_id,$employe_id))?false:true;
         } else {
 
             $erreurDate_start = '';
             $erreurDate_end = '';
-            $erreurprobation = '';
             $erreurcontract_type_id = '';
+            $erreurEmploye = '';
+
 
             $isValid = true;
         }
@@ -175,8 +214,8 @@ class Contract extends Model
             'isValid' => $isValid,
             'erreurDate_start' => $erreurDate_start,
             'erreurDate_end' => $erreurDate_end,
-            'erreurprobation' => $erreurprobation,
             'erreurcontract_type_id' => $erreurcontract_type_id,
+            'erreurEmploye' => $erreurEmploye,
 
         ];
     }
@@ -186,23 +225,24 @@ class Contract extends Model
      *
      * @param string $date_start
      * @param string $date_end
-     * @param string $probation
-     * @param string $contract_type_id
+
+     * @param integer $contract_type_id
+     * @param integer $employe_id
      * @return  boolean
      */
 
-    public static function isUnique($date_start, $date_end, $probation, $contract_type_id)
+    public static function isUnique($date_start, $date_end, $contract_type_id, $employe_id)
     {
 
         $contract = Contract::where('status', '!=', TypeStatus::SUPPRIME)
             ->where('date_start', '=', $date_start)
             ->where('date_end', '=', $date_end)
-            ->where('probation', '=', $probation)
             ->where('contract_type_id', '=', $contract_type_id)
+            ->where('employe_id', '=', $employe_id)
             ->first();
 
 
-        if ($contract === null) {
+        if ($contract) {
             return 1;
         }
         return 0;
@@ -212,11 +252,23 @@ class Contract extends Model
      * Obtenir le type de contract lié au contract
      *
      */
-    public function contract_type()
+    public function contracttype()
     {
 
 
-        return $this->belongsTo(Typecontract::class, 'contract_type_id');
+        return $this->belongsTo(ContractType::class, 'contract_type_id');
+    }
+
+
+    /**
+     * Obtenir l employe  lié au contract
+     *
+     */
+    public function employe()
+    {
+
+
+        return $this->belongsTo(Employe::class, 'employe_id');
     }
 
 

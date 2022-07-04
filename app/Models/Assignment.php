@@ -6,6 +6,7 @@ use App\Types\TypeStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Assignment extends Model
 {
@@ -26,7 +27,12 @@ class Assignment extends Model
         'date_start',
         'date_end',
         'position_id',
-        'employee_id',
+        'employe_id',
+        'department_id',
+        'is_manager',
+        'is_encours',
+        'business_id',
+        'status',
     ];
 
     /**
@@ -49,24 +55,59 @@ class Assignment extends Model
      *
      * @param  string $date_start
      * @param  string $date_end
-     * @param  string $employe_id
-     * @param  string $position_id
+     * @param  integer $position_id
+     * @param  integer $employee_id
+     * @param  integer $department_id
+     * @param  integer $is_manager
+
+     * @param  integer $business_id
      * @return Assignment
      */
 
-    public static function addAssignment($date_start, $date_end, $employe_id,$position_id)
+    public static function addAssignment($date_start, $date_end, $employee_id,
+                                         $position_id, $department_id, $is_manager,  $business_id)
     {
+
+        DB::transaction(function() use (
+            $date_start,
+            $date_end,
+            $position_id,
+            $employee_id,
+            $department_id,
+            $is_manager,
+            $business_id
+
+        ) {
+
+
+        // Add assignment
         $assignment = new Assignment();
         $assignment->date_start = $date_start;
         $assignment->date_end = $date_end;
-        $assignment->employe_id = $employe_id;
         $assignment->position_id = $position_id;
+        $assignment->employee_id = $employee_id;
+        $assignment->department_id = $department_id;
+        $assignment->is_manager = $is_manager;
+        $assignment->is_encours = 1;
+        $assignment->business_id = $business_id;
 
         $assignment->created_at = Carbon::now();
 
         $assignment->save();
 
-        return $assignment;
+        // Mise a jour de employe
+
+            Employe::findOrFail($employee_id)->update([
+
+                'position_id' =>$position_id,
+
+            ]);
+
+            return $assignment;
+
+
+
+        });
     }
 
     /**
@@ -78,34 +119,73 @@ class Assignment extends Model
     public static function rechercheAssignmentById($id)
     {
 
-        return   $assignment = Assignment::enddOrFail($id);
+        return   $assignment = Assignment::findOrFail($id);;
     }
 
     /**
      * Update d'une affectation
-     * @param  date $date_start
-     * @param  date $date_end
-     * @param  integer $employe_id
+     * @param  string $date_start
+     * @param  string $date_end
      * @param  integer $position_id
+     * @param  integer $employee_id
+     * @param  integer $department_id
+     * @param  integer $is_manager
+     * @param  integer $is_encours
+     * @param  integer $business_id
      * @param int $id
      * @return  Assignment
      */
 
-    public static function updateAssignment( $date_start, $date_end, $employe_id, $position_id, $id)
+    public static function updateAssignment( $date_start, $date_end, $employee_id,
+                                             $position_id, $department_id, $is_manager,  $business_id, $id)
     {
 
+        DB::transaction(function() use (
+            $date_start,
+            $date_end,
+            $position_id,
+            $employee_id,
+            $department_id,
+            $is_manager,
+            $business_id,
+            $id
 
-        return   $assignment = Assignment::enddOrFail($id)->update([
+        ) {
+
+          // update assignment
+
+          $assignment = Assignment::findOrFail($id)->update([
 
             'date_start' => $date_start,
             'date_end' => $date_end,
-            'employe_id' => $employe_id,
             'position_id' => $position_id,
+            'employee_id' => $employee_id,
+            'department_id' => $department_id,
+            'is_manager' => $is_manager,
+
+            'business_id' => $business_id,
 
             'id' => $id,
 
 
         ]);
+
+
+          // update employe
+
+            Employe::findOrFail($employee_id)->update([
+
+                'position_id' =>$position_id,
+
+            ]);
+
+            return $assignment;
+
+
+
+        });
+
+
     }
 
 
@@ -165,12 +245,13 @@ class Assignment extends Model
      * @param  date $date_end
      * @param  integer $employe_id
      * @param  integer $position_id
+     * @param  Assignment $old_assignment
 
 
      * @return  array
      */
 
-    public static function isValid($date_start, $date_end, $employe_id, $position_id)
+    public static function isValid($date_start, $date_end, $employe_id, $position_id, $old_assignment = null)
     {
 
         $data = array();
@@ -186,18 +267,27 @@ class Assignment extends Model
         // Verification de la validité des données
 
 
-        if (isEmpty($date_start)) {
+        if ($date_start === '') {
             $erreurDate_start = "La date de début est obligatoire" ;
-        }  elseif (isEmpty($date_end)) {
+        }  elseif ($date_end === '') {
             $erreurDate_end = "La date de end est obligatoire" ;
-        }elseif (isEmpty($employe_id)) {
+        }elseif ($employe_id === 0) {
             $erreurEmployee_id = "L'identité de l'employé est obligatoire" ;
         }
-        elseif (isEmpty($position_id)) {
+        elseif ($position_id === 0) {
             $erreurposition_id = "Le position est obligatoire" ;
         }
-        elseif (Assignment::isUnique($date_start, $date_end, $employe_id, $position_id)) {
-            $erreurNom = "Cette affectation est déja éffectuée " ;
+        elseif (
+            $old_assignment == null ||
+            $old_assignment->date_start !=$date_start ||
+            $old_assignment->date_end !=$date_end ||
+            $old_assignment->employe_id !=$employe_id ||
+            $old_assignment->position_id !=$position_id
+
+        ){
+            $erreurEmployee_id = (Assignment::isUnique($date_start, $date_end, $employe_id, $position_id))?'Cet assignment   existe déja ':'';
+
+            $isValid = (Assignment::isUnique($date_start, $date_end, $employe_id, $position_id))?false:true;
         }
 
 
@@ -242,6 +332,31 @@ class Assignment extends Model
     {
 
 
-        return $this->belongsTo(Employee::class, 'employee_id');
+        return $this->belongsTo(Employe::class, 'employee_id');
+    }
+
+
+    /**
+     * Obtenir le departement  affecté
+     *
+     */
+    public function department()
+    {
+
+
+        return $this->belongsTo(Departement::class, 'department_id');
+    }
+
+
+
+    /**
+     * Obtenir le business   affecté
+     *
+     */
+    public function business()
+    {
+
+
+        return $this->belongsTo(Business::class, 'business_id');
     }
 }

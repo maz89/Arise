@@ -29,6 +29,7 @@ class Family extends Model
         'telephone',
         'address',
         'employee_id',
+        'status',
     ];
 
     /**
@@ -258,7 +259,7 @@ class Family extends Model
     {
 
 
-        return $this->belongsTo(Employee::class, 'employee_id');
+        return $this->belongsTo(Employe::class, 'employee_id');
     }
 
 

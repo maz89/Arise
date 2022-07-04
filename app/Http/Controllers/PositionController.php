@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BusinessUnit;
-use App\Models\Employee;
-use App\Models\Experience;
-use App\Models\Family;
 use App\Models\Position;
+use App\Types\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -14,9 +11,17 @@ class PositionController extends Controller
 {
 
 
+   private      $active;
+
+    public function __construct()
+    {
+
+        $this->active = Menu::POSITION;
+    }
+
 
     /**
-     * Affiche la  liste des Businesss
+     * Affiche la  liste des Positions
      *
      * @return \Illuminate\Http\Response
      */
@@ -25,39 +30,53 @@ class PositionController extends Controller
 
         $positions = Position::allPositionActifs();
 
-        return view('position.index')->with('positions',$positions);
+        return view('position.index')->with(
+            [
+                'positions' => $positions,
+                 'active' => $this->active
+
+            ]
+
+
+        );
 
 
     }
 
 
+
+
+
+
     /**
-     * Ajouter une nouvelle Business   .
+     * Ajouter une nouvelle Position   .
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store( Request $request)
     {
+
+
         $data = Position::isValid(
-            $request->name,
-            $request->departement_id,
-            $request->business_id
+            $request->job_title,
+            $request->job_french,
+
+
+
         );
-
-
 
         if ($data['isValid'])
         {
-            // Enregistrement du Business
+            // Enregistrement du Position
 
             Position::addPosition(
-                $request->name,
-                $request->departement_id,
-                $request->business_id
+                $request->job_title,
+                $request->job_french,
 
-            );
 
+
+            ) ;
 
         }
 
@@ -67,7 +86,7 @@ class PositionController extends Controller
 
 
     /**
-     * Afficher  un Business
+     * Afficher  un Position
      *
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
@@ -77,6 +96,8 @@ class PositionController extends Controller
 
         $data = Position::recherchePositionById($id);
 
+
+
         return response()->json($data);
 
 
@@ -84,7 +105,7 @@ class PositionController extends Controller
 
 
     /**
-     * Update  un Business
+     * Update  un Position
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -92,27 +113,25 @@ class PositionController extends Controller
      */
     public function update( Request $request,  $id)
     {
-
+        $old_position = Position::recherchePositionById($id);
 
         $data = Position::isValid(
-            $request->name,
-            $request->departement_id,
-            $request->business_id
+            $request->job_title,
+
+            $old_position
 
         );
 
+
         if ($data['isValid'])
         {
-            // UpDate du Business
+            // UpDate du Position
             Position::updatePosition(
-
-                $request->name,
-                $request->departement_id,
-                $request->business_id,
-                $request->id
+                $request->job_title,
+                $request->job_french,
 
 
-            );
+                $id );
 
 
         }
@@ -124,7 +143,7 @@ class PositionController extends Controller
 
 
     /**
-     * Supprimer   une  Business scolaire .
+     * Supprimer   une  Position scolaire .
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -137,11 +156,12 @@ class PositionController extends Controller
         // check data deleted or not
         if ($delete == 1) {
             $success = true;
-            $message = "successful deletion";
+            $message = "Suppression effectuée avec succès ";
         } else {
             $success = true;
-            $message = "Employee not found";
+            $message = "Le Position  n' est pas trouvé ";
         }
+
 
         //  return response
         return response()->json([

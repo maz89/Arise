@@ -26,8 +26,11 @@ class Immunization extends Model
 
 
         'employee_id',
-        'Vaccine_id',
-        'date',
+        'vaccine_id',
+        'date_immunization',
+        'is_vaccine',
+        'reason',
+        'status',
 
     ];
 
@@ -50,20 +53,25 @@ class Immunization extends Model
      * Ajouter une Immunization
      *
 
-     * @param  string $date
-     * @param  string $employee_id
-     * @param  string $Vaccine_id
+     * @param  integer $employee_id
+     * @param  integer $vaccine_id
+     * @param  date $date_immunization
+     * @param  integer $is_vaccine
+     * @param  string $reason
+
      * @return Immunization
      */
 
-    public static function addImmunization($employee_id,$Vaccine_id, $date )
+    public static function addImmunization($employee_id,$vaccine_id, $date_immunization, $is_vaccine, $reason )
     {
         $immunization = new Immunization();
 
 
         $immunization->employee_id = $employee_id;
-        $immunization->Vaccine_id = $Vaccine_id;
-        $immunization->date_fin = $date;
+        $immunization->vaccine_id = $vaccine_id;
+        $immunization->date_immunization = $date_immunization;
+        $immunization->is_vaccine = $is_vaccine;
+        $immunization->reason = $reason;
 
         $immunization->created_at = Carbon::now();
 
@@ -87,13 +95,13 @@ class Immunization extends Model
     /**
      * Update d'une Immunization
  * @param  integer $employee_id
-     * @param  integer $Vaccine_id
-     *      * @param  date $date
+     * @param  integer $vaccine_id
+     *      * @param  date $date_immunization
      * @param int $id
      * @return  Immunization
      */
 
-    public static function updateImmunization($employee_id, $Vaccine_id,$date, $id)
+    public static function updateImmunization($employee_id,$vaccine_id, $date_immunization, $is_vaccine, $reason, $id)
     {
 
 
@@ -102,8 +110,10 @@ class Immunization extends Model
 
 
             'employee_id' => $employee_id,
-            'Vaccine_id' => $Vaccine_id,
-            'date' => $date,
+            'vaccine_id' => $vaccine_id,
+            'date_immunization' => $date_immunization,
+            'is_vaccine' => $is_vaccine,
+            'reason' => $reason,
 
             'id' => $id,
 
@@ -139,21 +149,21 @@ class Immunization extends Model
 
 
      * @param  integer $employee_id
-     * @param  integer $Vaccine_id
-     *      * @param  date $date
+     * @param  integer $vaccine_id
+     *      * @param  date $date_immunization
 
      * @return  boolean
      */
 
-    public static function isUnique($employee_id, $Vaccine_id, $date)
+    public static function isUnique($employee_id, $vaccine_id, $date_immunization)
     {
 
         $immunization = Immunization::where('status', '!=', TypeStatus::SUPPRIME)
 
 
             ->where('employee_id', '=', $employee_id)
-            ->where('Vaccine_id', '=', $Vaccine_id)
-            ->where('date_fin', '=', $date)
+            ->where('vaccine_id', '=', $vaccine_id)
+            ->where('date_immunization', '=', $date_immunization)
 
             ->first();
 
@@ -169,14 +179,15 @@ return 0;
 
 
  * @param  integer $employee_id
- * @param  integer $Vaccine_id
- * @param  date $date
+ * @param  integer $vaccine_id
+ * @param  date $date_immunization
+ * @param  Immunization $old_immunization
 
 
  * @return  array
  */
 
-public static function isValid($employee_id, $Vaccine_id,$date)
+public static function isValid($employee_id, $vaccine_id,$date_immunization, $old_immunization = null)
 {
 
     $data = array();
@@ -184,7 +195,7 @@ public static function isValid($employee_id, $Vaccine_id,$date)
     $isValid = false;
 
     $erreurEmployee_id = '';
-    $erreurVaccine_id = '';
+    $erreurvaccine_id = '';
     $erreurDate = '';
 
 
@@ -192,18 +203,27 @@ public static function isValid($employee_id, $Vaccine_id,$date)
     // Verification de la validité des données
 
 
-    if (isEmpty($employee_id)) {
+    if ($employee_id ===0) {
         $erreurEmployee_id = "L'identité de l'employé est obligatoire" ;
     }
-    elseif (isEmpty($Vaccine_id)) {
-        $erreurVaccine_id = "Le Vaccine est obligatoire" ;
+    elseif ($vaccine_id ===0) {
+        $erreurvaccine_id = "Le choix du vaccin  est obligatoire" ;
     }
-    elseif (isEmpty($date)) {
+    elseif ($date_immunization === '') {
         $erreurDate = "La date de Immunization est obligatoire" ;
     }
-    elseif (Immunization::isUnique($employee_id, $Vaccine_id,$date)) {
-        $erreurNom = "Cette Immunization est déja renseignée " ;
+    elseif (
+        $old_immunization == null ||
+        $old_immunization->employee_id !=$employee_id ||
+        $old_immunization->vaccine_id !=$vaccine_id ||
+        $old_immunization->date_immunization !=$date_immunization
+
+    ){
+        $erreurEmployee_id = (Immunization::isUnique($employee_id, $vaccine_id, $date_immunization))?'Ce employé a déjà reçu ce vaccin à cette date  ':'';
+
+        $isValid = (Immunization::isUnique($employee_id, $vaccine_id, $date_immunization))?false:true;
     }
+
 
 
     else {
@@ -211,7 +231,7 @@ public static function isValid($employee_id, $Vaccine_id,$date)
 
 
         $erreurEmployee_id = '';
-        $erreurVaccine_id = '';
+        $erreurvaccine_id = '';
         $erreurDate = '';
 
         $isValid = true;
@@ -224,7 +244,7 @@ public static function isValid($employee_id, $Vaccine_id,$date)
 
 
         'erreuremployee_id' => $erreurEmployee_id,
-        'erreurVaccine_id' => $erreurVaccine_id,
+        'erreurvaccine_id' => $erreurvaccine_id,
         'erreurDate' => $erreurDate,
 
     ];
@@ -238,7 +258,7 @@ public function Vaccin()
 {
 
 
-    return $this->belongsTo(Vaccine::class, 'Vaccine_id');
+    return $this->belongsTo(Vaccine::class, 'vaccine_id');
 }
 
 /**
@@ -249,7 +269,19 @@ public function employee()
 {
 
 
-    return $this->belongsTo(Employee::class, 'employee_id');
+    return $this->belongsTo(Employe::class, 'employee_id');
 }
+
+
+    /**
+     * Obtenir l'employé concerné
+     *
+     */
+    public function vaccine()
+    {
+
+
+        return $this->belongsTo(Vaccine::class, 'vaccine_id');
+    }
 
 }

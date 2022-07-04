@@ -25,6 +25,7 @@ class Business extends Model
     protected $fillable = [
         'code',
         'title',
+        'status',
 
     ];
 
@@ -152,12 +153,13 @@ class Business extends Model
 
      * @param  integer $code
      * @param  integer $title
+     * @param  Business $old_business
 
 
      * @return  array
      */
 
-    public static function isValid($code, $title)
+    public static function isValid($code, $title, $old_business = null)
     {
 
         $data = array();
@@ -170,13 +172,20 @@ class Business extends Model
         // Verification de la validité des données
 
 
-        if ($code =='') {
-            $erreurCode= "Le code du business est obligatoire" ;
-        }  elseif ($title =='') {
-            $erreurtitle = "Le libellé est obligatoire" ;
+        if ($code ==='') {
+            $erreurCode= "Le code du business est obligatoire " ;
+        }  elseif ($title ==='') {
+            $erreurtitle = "Le titre  est obligatoire" ;
         }
-        elseif (Business::isUnique($code, $title)) {
-            $erreurtitle = "Cet Business Unit existe déjà " ;
+        elseif (
+            $old_business == null ||
+            $old_business->code !=$code||
+            $old_business->title !=$title
+
+        ){
+            $erreurCode = (Business::isUnique($code, $title))?'Ce business  existe déja ':'';
+
+            $isValid = (Business::isUnique($code, $title))?false:true;
         }
 
 
@@ -197,5 +206,36 @@ class Business extends Model
 
         ];
     }
+
+
+
+
+    /**
+     * Affiche le nombre total de business
+     * @param  int $classe_id
+
+
+     * @return  int total
+     */
+
+    public static function totalBusiness (){
+
+        $total = Business::where ('status','!=',TypeStatus::SUPPRIME)
+
+
+            ->orderBy('id','DESC')
+            ->count()
+
+
+        ;
+
+
+        if($total){
+            return $total;
+        }
+        return 0;
+
+    }
+
 
 }

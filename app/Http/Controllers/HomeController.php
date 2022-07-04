@@ -2,23 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Types\Menu;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    //
+
+    private      $active;
+
+    public function __construct()
+    {
+
+        $this->active = Menu::DASHBOARD;
+    }
+
 
     /**
-     * Affiche le tableau de bord
+     * Afficher le tableau de bord
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
+        return view('dashboard')->with(
 
-       return view('dashboard');
+            [
 
+                'active' => $this->active
+            ]
 
+        );
     }
+
+
 
 }

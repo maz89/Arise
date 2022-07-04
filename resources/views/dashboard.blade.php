@@ -2,7 +2,7 @@
 
 @section('title')
 
-Dashboard
+    Dashboard
 
 @endsection
 
@@ -22,36 +22,143 @@ Dashboard
         <div class="content">
             <div class="row">
 
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="dash-widget">
-                        <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
+                        <span class="dash-widget-bg1"><i class="fa fa-user-o"></i></span>
                         <div class="dash-widget-info text-right">
-                            <h3>50</h3>
-                            <span class="widget-title2">Employees <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <h3>
+
+                                @php
+
+                                    $total= App\Models\Employe::totalEmploye();
+
+                                @endphp
+
+                                {{$total}}
+
+
+
+                            </h3>
+                            <span class="widget-title1">Employees </span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="dash-widget">
                         <span class="dash-widget-bg3"><i class="fa fa-briefcase" aria-hidden="true"></i></span>
                         <div class="dash-widget-info text-right">
-                            <h3>5</h3>
-                            <span class="widget-title3">Business <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <h3>
+
+                                @php
+
+                                    $total= App\Models\Business::totalBusiness();
+
+                                @endphp
+
+                                {{$total}}
+
+                            </h3>
+                            <span class="widget-title3">Business </span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="dash-widget">
                         <span class="dash-widget-bg4"><i class="fa fa-bookmark" aria-hidden="true"></i></span>
                         <div class="dash-widget-info text-right">
-                            <h3>10</h3>
-                            <span class="widget-title4">Departments<i class="fa fa-check" aria-hidden="true"></i></span>
+                            <h3>
+
+                                @php
+
+                                    $total= App\Models\Departement::totalDepartement();
+
+                                @endphp
+
+                                {{$total}}
+
+
+
+                            </h3>
+                            <span class="widget-title4">Departments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="dash-widget">
+                        <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
+                        <div class="dash-widget-info text-right">
+                            <h3>
+
+                                @php
+
+                                    $total= App\Models\Position::totalPosition();
+
+                                @endphp
+
+                                {{$total}}
+
+
+
+                            </h3>
+                            <span class="widget-title2">Jobs </span>
                         </div>
                     </div>
                 </div>
             </div>
 
+
+
             <div class="row">
+                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chart-title">
+                                <h4>Diversity</h4>
+                                {{--                                    <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>--}}
+                                {{--                              --}}
+                            </div>
+                            <canvas id="diversity" ></canvas>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chart-title">
+                                <h4>Gender</h4>
+                                {{--                                    <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>--}}
+                                {{--                              --}}
+                            </div>
+                            <canvas id="gender" ></canvas>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chart-title">
+                                <h4>myChart</h4>
+                                {{--                                    <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>--}}
+                                {{--                              --}}
+                            </div>
+                            <canvas id="myChart"></canvas>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+
+
+            </div>
+            <div class="row">
+
                 <div class="col-12 col-md-6 col-lg-8 col-xl-8">
                     <div class="card">
                         <div class="card-header">
@@ -84,93 +191,13 @@ Dashboard
                                         </td>
 
                                     </tr>
-                                    <tr>
-                                        <td style="min-width: 200px;">
-                                            <a class="avatar" href="profile.html">B</a>
-                                            <h2><a href="profile.html">Bernardo Galaviz </a></h2>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">birthday</h5>
-                                            <p>10.5.2022</p>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">Age</h5>
-                                            <p>35</p>
-                                        </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td style="min-width: 200px;">
-                                            <a class="avatar" href="profile.html">B</a>
-                                            <h2><a href="profile.html">Bernardo Galaviz </a></h2>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">birthday</h5>
-                                            <p>10.5.2022</p>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">Age</h5>
-                                            <p>35</p>
-                                        </td>
-
-                                    </tr>
 
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 col-xl-4">
-                    <div class="card member-panel">
-                        <div class="card-header bg-white">
-                            <h4 class="card-title mb-0">Managers</h4>
-                        </div>
-                        <div class="car">
-                            <ul class="contact-list">
-                                <li>
-                                    <div class="contact-cont">
-                                        <div class="float-left user-img m-r-10">
-                                            <a href="profile.html" title="John Doe"><img src="assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
-                                        </div>
-                                        <div class="contact-info">
-                                            <span class="contact-name text-ellipsis">John Doe</span>
-                                            <span class="contact-date">IT, IZ</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-cont">
-                                        <div class="float-left user-img m-r-10">
-                                            <a href="profile.html" title="Richard Miles"><img src="assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
-                                        </div>
-                                        <div class="contact-info">
-                                            <span class="contact-name text-ellipsis">Richard Miles</span>
-                                            <span class="contact-date">MD,fgh</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-cont">
-                                        <div class="float-left user-img m-r-10">
-                                            <a href="profile.html" title="John Doe"><img src="assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status away"></span></a>
-                                        </div>
-                                        <div class="contact-info">
-                                            <span class="contact-name text-ellipsis">John Doe</span>
-                                            <span class="contact-date">BMBS, SDFGHJ</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-footer text-center bg-white">
-                            <a href="#" class="text-muted">View all Managers</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-6 col-lg-8 col-xl-8">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title d-inline-block">Ending contracts</h4> <a href="appointments.html" class="btn btn-primary float-right">View all</a>
@@ -202,21 +229,7 @@ Dashboard
                                         </td>
 
                                     </tr>
-                                    <tr>
-                                        <td style="min-width: 200px;">
-                                            <a class="avatar" href="profile.html">B</a>
-                                            <h2><a href="profile.html">Bernardo Galaviz </a></h2>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">End date</h5>
-                                            <p>15.5.2022</p>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">Day</h5>
-                                            <p>Ends in 10 days</p>
-                                        </td>
 
-                                    </tr>
 
 
                                     </tbody>
@@ -255,21 +268,7 @@ Dashboard
                                         </td>
 
                                     </tr>
-                                    <tr>
-                                        <td style="min-width: 200px;">
-                                            <a class="avatar" href="profile.html">B</a>
-                                            <h2><a href="profile.html">Bernardo Galaviz </a></h2>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">End date</h5>
-                                            <p>15.5.2022</p>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">Day</h5>
-                                            <p>Ends in 10 days</p>
-                                        </td>
 
-                                    </tr>
 
 
                                     </tbody>
@@ -295,22 +294,7 @@ Dashboard
                                         <td>10.05.2022</td>
                                         <td><button class="btn btn-primary btn-primary-one float-right">HR, ICD</button></td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <img width="28" height="28" class="rounded-circle" src="assets/img/user.jpg" alt="">
-                                            <h2>John Doe</h2>
-                                        </td>
-                                        <td>10.05.2022</td>
-                                        <td><button class="btn btn-primary btn-primary-one float-right">HR, ICD</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <img width="28" height="28" class="rounded-circle" src="assets/img/user.jpg" alt="">
-                                            <h2>John Doe</h2>
-                                        </td>
-                                        <td>10.05.2022</td>
-                                        <td><button class="btn btn-primary btn-primary-one float-right">HR, ICD</button></td>
-                                    </tr>
+
 
                                     </tbody>
                                 </table>
@@ -330,6 +314,67 @@ Dashboard
 
     <script src="{{asset('assets/js/Chart.bundle.js')}}"></script>
     <script src="{{asset('assets/js/chart.js')}}"></script>
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js')}}"></script>
+
+    <script>
+
+
+        new Chart(document.getElementById("diversity"), {
+            type: 'pie',
+            data: {
+                labels: ["National", "Expatriate"],
+                datasets: [{
+                    label: "Chiffres en pourcentage ",
+                    backgroundColor: ["#002060", "#dadada"],
+                    data: [60.5,39.5]
+                }]
+            },
+
+        });
+
+    </script>
+
+    <script>
+
+
+        new Chart(document.getElementById("gender"), {
+            type: 'pie',
+            data: {
+                labels: ["Male", "Female"],
+                datasets: [{
+                    label: "Chiffres en pourcentage ",
+                    backgroundColor: ["#159aee", "#aa1c03"],
+                    data: [73, 27]
+                }]
+            },
+
+        });
+
+    </script>
+
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["AVC", "ICD", "IZ", "MIFA", "PLAN", "SOJA"],
+                datasets: [{
+                    data: [62,46,58,28,29,12],
+                    label: "STAFF",
+                    borderColor: "rgb(3,66,106)",
+                    backgroundColor: "rgb(62,149,205,0.1)",
+                    borderWidth:2
+                }, {
+                    data: [6,67,13,11,20,0],
+                    label: "EXT",
+                    borderColor: "rgb(172,13,3)",
+                    backgroundColor:"rgb(196,88,80,0.1)",
+                    borderWidth:2
+                }
+                ]
+            },
+        });
+    </script>
 
 @endsection
 

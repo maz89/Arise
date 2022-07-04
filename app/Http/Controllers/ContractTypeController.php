@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Business;
 use App\Models\ContractType;
+use App\Types\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -11,41 +11,45 @@ class ContractTypeController extends Controller
 {
 
 
+   private      $active;
+
+    public function __construct()
+    {
+
+        $this->active = Menu::CONTRACT_TYPE;
+    }
+
 
     /**
-     * Affiche la  liste des Familys
+     * Affiche la  liste des ContractTypes
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
 
-        $contract_types = ContractType::allContractTypeActifs();
+        $contracttypes = ContractType::allContractTypeActifs();
 
-        return view('contract type.index')->with('contract_types',$contract_types);
+        return view('contracttype.index')->with(
+            [
+                'contracttypes' => $contracttypes,
+                 'active' => $this->active
 
-
-    }
-
-
-    /**
-     * Affiche le formulaire d'ajout
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function add()
-    {
+            ]
 
 
-
-        return view('contract type.add');
+        );
 
 
     }
 
 
+
+
+
+
     /**
-     * Ajouter une nouvelle Family   .
+     * Ajouter une nouvelle ContractType   .
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -53,7 +57,7 @@ class ContractTypeController extends Controller
     public function store( Request $request)
     {
         $data = ContractType::isValid(
-            $request->name
+            $request->libelle,
 
 
 
@@ -61,13 +65,14 @@ class ContractTypeController extends Controller
 
         if ($data['isValid'])
         {
-            // Enregistrement du Family
+            // Enregistrement du ContractType
 
             ContractType::addContractType(
+               $request->libelle,
 
-                $request->name
 
-            );
+
+            ) ;
 
         }
 
@@ -77,7 +82,7 @@ class ContractTypeController extends Controller
 
 
     /**
-     * Afficher  un Family
+     * Afficher  un ContractType
      *
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
@@ -87,6 +92,8 @@ class ContractTypeController extends Controller
 
         $data = ContractType::rechercheContractTypeById($id);
 
+
+
         return response()->json($data);
 
 
@@ -94,7 +101,7 @@ class ContractTypeController extends Controller
 
 
     /**
-     * Update  un Family
+     * Update  un ContractType
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -102,19 +109,20 @@ class ContractTypeController extends Controller
      */
     public function update( Request $request,  $id)
     {
-
+        $old_ContractType = ContractType::rechercheContractTypeById($id);
 
         $data = ContractType::isValid(
-            $request->name
-
+          $request->libelle,
+            $old_ContractType
 
         );
 
+
         if ($data['isValid'])
         {
-            // UpDate du Family
+            // UpDate du ContractType
             ContractType::updateContractType(
-                $request->name,
+                 $request->libelle,
 
 
                 $id );
@@ -129,7 +137,7 @@ class ContractTypeController extends Controller
 
 
     /**
-     * Supprimer   une  Family scolaire .
+     * Supprimer   une  ContractType scolaire .
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -142,11 +150,12 @@ class ContractTypeController extends Controller
         // check data deleted or not
         if ($delete == 1) {
             $success = true;
-            $message = "contract deleted";
+            $message = "Suppression effectuée avec succès ";
         } else {
-            $success = false;
-            $message = "This contract does not exist";
+            $success = true;
+            $message = "Le ContractType  n est pas trouvé ";
         }
+
 
         //  return response
         return response()->json([

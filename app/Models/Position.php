@@ -22,9 +22,10 @@ class Position extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'departement_id',
-        'business_id',
+
+        'job_title',
+        'job_french',
+        'status',
 
     ];
 
@@ -46,19 +47,17 @@ class Position extends Model
     /**
      * Ajouter une Position
      *
-     * @param  string $name
-     * @param  string $departement_id
-     * @param  string $business_id
+     * @param  string $job_title
+     * @param  string $job_french
+
  * @return Position
      */
 
-    public static function addPosition($name, $departement_id, $business_id)
+    public static function addPosition($job_title, $job_french)
     {
         $position = new Position();
-        $position->name = $name;
-        $position->departement_id = $departement_id;
-        $position->business_id = $business_id;
-
+        $position->job_title = $job_title;
+        $position->job_french = $job_french;
 
         $position->created_at = Carbon::now();
 
@@ -81,22 +80,21 @@ class Position extends Model
 
     /**
      * Update d'une Position
-     * @param  string $name
-     * @param  string $departement_id
-     * @param  string $business_id
+     * @param  string $job_title
+     * @param  string $job_french
  * @param int $id
      * @return  Position
      */
 
-    public static function updatePosition( $name,$departement_id, $business_id, $id)
+    public static function updatePosition( $job_title, $job_french, $id)
     {
 
 
         return   $position = Position::findOrFail($id)->update([
 
-            'name' => $name,
-            'departement_id' => $departement_id,
-            'business_id' => $business_id,
+            'job_title' => $job_title,
+            'job_french' => $job_french,
+
 
             'id' => $id,
 
@@ -130,27 +128,23 @@ class Position extends Model
      * Verifier si le Position existe deja
      *
 
-     * @param  string $name
-     * @param  string $departement_id
-     * @param  string $business_id
-     * @param  string $telephone
-     * @param  string $adresse
+     * @param  string $job_title
+
+
 
      * @return  boolean
      */
 
-    public static function isUnique($name, $departement_id, $business_id)
+    public static function isUnique($job_title)
     {
 
         $position = Position::where('status', '!=', TypeStatus::SUPPRIME)
-            ->where('name', '=', $name)
-            ->where('departement_id', '=', $departement_id)
-            ->where('business_id', '=', $business_id)
+            ->where('job_title', '=', $job_title)
 
             ->first();
 
 
-        if ($position === null) {
+        if ($position) {
             return 1;
         }
         return 0;
@@ -158,22 +152,22 @@ class Position extends Model
 
     /**
      * Verification de la validité de l'ajout
-     * @param  string $name
-     * @param  string $departement_id
-     * @param  string $business_id
+     * @param  string $job_title
+
+     * @param  Position $old_position
 
      * @return  array
      */
 
-    public static function isValid($name, $departement_id, $business_id)
+    public static function isValid($job_title,$old_position = null )
     {
 
         $data = array();
 
         $isValid = false;
-        $erreurName = '';
-        $erreurDepartement = '';
-        $erreurBusiness = '';
+        $erreurJobTitle = '';
+
+
 
 
 
@@ -181,24 +175,25 @@ class Position extends Model
         // Verification de la validité des données
 
 
-        if (isEmpty($name)) {
-            $erreurName = "Le libellé est obligatoire" ;
-        }  elseif (isEmpty($departement_id)) {
-            $erreurDepartement = "Le nom du departement est obligatoire" ;
-        }elseif (isEmpty($business_id)) {
-            $erreurBusiness = "Le business du Position est obligatoire" ;
+        if ($job_title ==='') {
+            $erreurJobTitle = "Le titre  est obligatoire" ;
         }
 
-        elseif (Position::isUnique($name, $departement_id, $business_id)) {
-            $erreurName = "Cette Position  existe dejà " ;
-        }
+        elseif (
+            $old_position == null ||
+            $old_position->job_title !=$job_title
 
+        ){
+            $erreurJobTitle = (Position::isUnique($job_title))?'Cette position  existe déja ':'';
+
+            $isValid = (Position::isUnique($job_title))?false:true;
+        }
 
         else {
 
-            $erreurName = '';
-            $erreurDepartement = '';
-            $erreurBusiness = '';
+            $erreurJobTitle = '';
+
+
 
             $isValid = true;
         }
@@ -206,33 +201,40 @@ class Position extends Model
         return  $data = [
 
             'isValid' => $isValid,
-            'erreurname' => $erreurName,
-            'erreurdepartement_id' => $erreurDepartement,
-            'erreurbusiness_id' => $erreurBusiness,
+            'erreurJobTitle' => $erreurJobTitle,
+
+
 
         ];
     }
 
-    /**
-     * Obtenir le departement  lié au Position
-     */
-    public function departement()
-    {
 
-
-        return $this->belongsTo(Departement::class, 'departement_id');
-    }
 
     /**
-     * Obtenir le business lié au Position
+     * Affiche le nombre total de positions
+     * @param  int $classe_id
+
+
+     * @return  int total
      */
-    public function business ()
-    {
+
+    public static function totalPosition (){
+
+        $total = Position::where ('status','!=',TypeStatus::SUPPRIME)
 
 
-        return $this->belongsTo(Business::class, 'business_id');
+            ->orderBy('id','DESC')
+            ->count()
+
+
+        ;
+
+
+        if($total){
+            return $total;
+        }
+        return 0;
+
     }
-
-
 
 }

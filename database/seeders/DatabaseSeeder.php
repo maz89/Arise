@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,8 +13,61 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+
         $this->call([
-           BusinessTableSeeder::class
+
+            ContinentTableSeeder::class,
+
+            BandTableSeeder::class,
+
+            DiseaseTableSeeder::class,
+
+            RegionTableSeeder::class,
+
+            CountrieTableSeeder::class,
+
+            CoutumeTableSeeder::class,
+
+            FormerEmployerTableSeeder::class,
+
+            NiveauTableSeeder::class,
+
+            CategorieTableSeeder::class,
+            ApartmentTableSeeder::class,
+             AssignmentTableSeeder::class,
+          BankInfoTableSeeder::class,
+          BandTableSeeder::class,
+          BrandTableSeeder::class,
+            BusinessTableSeeder::class,
+            CompanyTableSeeder::class,
+            ContractTableSeeder::class,
+            ContractTypeTableSeeder::class,
+            DepartmentTableSeeder::class,
+            DriverTableSeeder::class,
+            DriveTableSeeder::class,
+            EmergencieTableSeeder::class,
+            EmployeTableSeeder::class,
+            ExperienceTableSeeder::class,
+            FamilyTableSeeder::class,
+            ImmunizationTableSeeder::class,
+            ModeleTableSeeder::class,
+            NationaliteTableSeeder::class,
+            PositionTableSeeder::class,
+            ProfilTableSeeder::class,
+            RoleTableSeeder::class,
+            VaccineTableSeeder::class,
+
+             VehicleTableSeeder::class,
+
+
+
+
+
+
         ]);
+
+
+
     }
 }

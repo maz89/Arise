@@ -26,6 +26,9 @@ class Departement extends Model
 
         'title',
 
+         'status',
+
+
     ];
 
     /**
@@ -146,12 +149,13 @@ class Departement extends Model
      * Verification de la validité de l'ajout
 
      * @param  integer $title
+     * @param  Departement $old_departement
 
 
      * @return  array
      */
 
-    public static function isValid($title)
+    public static function isValid($title, $old_departement= null)
     {
 
         $data = array();
@@ -165,10 +169,16 @@ class Departement extends Model
 
 
         if ($title==='') {
-            $erreurTitle = "Le libellé est obligatoire" ;
+            $erreurTitle = "Le titre  est obligatoire" ;
         }
-        elseif (Departement::isUnique($title)) {
-            $erreurTitle = "Ce département existe déjà " ;
+        elseif (
+            $old_departement == null ||
+            $old_departement->title !=$title
+
+        ){
+            $erreurTitle = (Departement::isUnique($title))?'Ce titre  existe déja ':'';
+
+            $isValid = (Departement::isUnique($title))?false:true;
         }
 
 
@@ -186,6 +196,35 @@ class Departement extends Model
             'erreurTitle' => $erreurTitle,
 
         ];
+    }
+
+
+
+    /**
+     * Affiche le nombre total de positions
+     * @param  int $classe_id
+
+
+     * @return  int total
+     */
+
+    public static function totalDepartement (){
+
+        $total = Departement::where ('status','!=',TypeStatus::SUPPRIME)
+
+
+            ->orderBy('id','DESC')
+            ->count()
+
+
+        ;
+
+
+        if($total){
+            return $total;
+        }
+        return 0;
+
     }
 
 

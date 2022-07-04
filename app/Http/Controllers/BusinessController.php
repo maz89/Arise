@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Business;
+use App\Types\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -10,9 +11,17 @@ class BusinessController extends Controller
 {
 
 
+   private      $active;
+
+    public function __construct()
+    {
+
+        $this->active = Menu::BUSINESS;
+    }
+
 
     /**
-     * Affiche la  liste des Familys
+     * Affiche la  liste des Businesss
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +30,15 @@ class BusinessController extends Controller
 
         $businesses = Business::allBusinessActifs();
 
-        return view('business.index')->with('businesses',$businesses);
+        return view('business.index')->with(
+            [
+                'businesses' => $businesses,
+                 'active' => $this->active
+
+            ]
+
+
+        );
 
 
     }
@@ -29,47 +46,36 @@ class BusinessController extends Controller
 
 
 
-    /**
-     * Affiche le formulaire d'ajout
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function add()
-    {
-
-
-
-        return view('business.add');
-
-
-    }
 
 
     /**
-     * Ajouter une nouvelle Family   .
+     * Ajouter une nouvelle Business   .
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store( Request $request)
     {
+
         $data = Business::isValid(
             $request->code,
             $request->title
+
 
 
         );
 
         if ($data['isValid'])
         {
-            // Enregistrement du Family
+            // Enregistrement du Business
 
             Business::addBusiness(
-
                 $request->code,
                 $request->title
 
-            );
+
+
+            ) ;
 
         }
 
@@ -79,7 +85,7 @@ class BusinessController extends Controller
 
 
     /**
-     * Afficher  un Family
+     * Afficher  un Business
      *
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
@@ -89,6 +95,8 @@ class BusinessController extends Controller
 
         $data = Business::rechercheBusinessById($id);
 
+
+
         return response()->json($data);
 
 
@@ -96,7 +104,7 @@ class BusinessController extends Controller
 
 
     /**
-     * Update  un Family
+     * Update  un Business
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -104,21 +112,24 @@ class BusinessController extends Controller
      */
     public function update( Request $request,  $id)
     {
-
+        $old_business = Business::rechercheBusinessById($id);
 
         $data = Business::isValid(
             $request->code,
-            $request->libelle
-
+            $request->title
+            ,
+            $old_business
 
         );
 
+
         if ($data['isValid'])
         {
-            // UpDate du Family
+            // UpDate du Business
             Business::updateBusiness(
                 $request->code,
-                $request->libelle,
+                $request->title,
+
 
                 $id );
 
@@ -132,7 +143,7 @@ class BusinessController extends Controller
 
 
     /**
-     * Supprimer   une  Family scolaire .
+     * Supprimer   une  Business scolaire .
      *
      * @param  int  $int
      * @param  \Illuminate\Http\Request  $request
@@ -145,11 +156,12 @@ class BusinessController extends Controller
         // check data deleted or not
         if ($delete == 1) {
             $success = true;
-            $message = "Business deleted";
+            $message = "Suppression effectuée avec succès ";
         } else {
-            $success = false;
-            $message = "This business does not exist";
+            $success = true;
+            $message = "L' Business  n' est pas trouvé ";
         }
+
 
         //  return response
         return response()->json([
