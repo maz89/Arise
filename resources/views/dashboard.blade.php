@@ -1,3 +1,4 @@
+
 @extends('layout.app')
 
 @section('title')
@@ -12,313 +13,921 @@
 
 @endsection
 
-
-
-
-
 @section('contenu')
 
-    <div class="page-wrapper">
-        <div class="content">
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
             <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Dashboard </h4>
 
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget">
-                        <span class="dash-widget-bg1"><i class="fa fa-user-o"></i></span>
-                        <div class="dash-widget-info text-right">
-                            <h3>
+                       {{-- <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboards</a></li>
+                                <li class="breadcrumb-item active">Projects</li>
+                            </ol>
+                        </div>--}}
 
-                                @php
-
-                                    $total= App\Models\Employe::totalEmploye();
-
-                                @endphp
-
-                                {{$total}}
-
-
-
-                            </h3>
-                            <span class="widget-title1">Employees </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget">
-                        <span class="dash-widget-bg3"><i class="fa fa-briefcase" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info text-right">
-                            <h3>
-
-                                @php
-
-                                    $total= App\Models\Business::totalBusiness();
-
-                                @endphp
-
-                                {{$total}}
-
-                            </h3>
-                            <span class="widget-title3">Business </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget">
-                        <span class="dash-widget-bg4"><i class="fa fa-bookmark" aria-hidden="true"></i></span>
-                        <div class="dash-widget-info text-right">
-                            <h3>
-
-                                @php
-
-                                    $total= App\Models\Departement::totalDepartement();
-
-                                @endphp
-
-                                {{$total}}
-
-
-
-                            </h3>
-                            <span class="widget-title4">Departments</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="dash-widget">
-                        <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
-                        <div class="dash-widget-info text-right">
-                            <h3>
-
-                                @php
-
-                                    $total= App\Models\Position::totalPosition();
-
-                                @endphp
-
-                                {{$total}}
-
-
-
-                            </h3>
-                            <span class="widget-title2">Jobs </span>
-                        </div>
                     </div>
                 </div>
             </div>
+            <!-- end page title -->
+
+            <div class="row project-wrapper">
+                <div class="col-xxl-8">
+                    <div class="row">
+                        <div class="col-xl-3">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-soft-primary text-primary rounded-2 fs-2">
+                                                        <i data-feather="briefcase" class="text-primary"></i>
+                                                    </span>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden ms-3">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Employees </p>
+                                            <div class="d-flex align-items-center mb-3">
+
+                                                @php
+
+                                                    $total= App\Models\Employe::totalEmploye();
+
+                                                @endphp
 
 
+                                                <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value" data-target="{{$total}}">0</span></h4>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div>
+                        </div><!-- end col -->
+
+                        <div class="col-xl-3">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-soft-warning text-warning rounded-2 fs-2">
+                                                        <i data-feather="award" class="text-warning"></i>
+                                                    </span>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <p class="text-uppercase fw-medium text-muted mb-3">Business</p>
+
+
+                                            @php
+
+                                                $total= App\Models\Business::totalBusiness();
+
+                                            @endphp
+
+
+                                            <div class="d-flex align-items-center mb-3">
+                                                <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value" data-target=" {{$total}}">0</span></h4>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div>
+                        </div><!-- end col -->
+
+                        <div class="col-xl-3">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-soft-info text-info rounded-2 fs-2">
+                                                        <i data-feather="clock" class="text-info"></i>
+                                                    </span>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden ms-3">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Departments</p>
+                                            <div class="d-flex align-items-center mb-3">
+
+                                                @php
+
+                                                    $total= App\Models\Departement::totalDepartement();
+
+                                                @endphp
+
+
+
+
+                                                <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value" data-target="{{$total}}">0</span></h4>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div>
+                        </div><!-- end col -->
+
+                        <div class="col-xl-3">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-soft-info text-info rounded-2 fs-2">
+                                                        <i data-feather="clock" class="text-info"></i>
+                                                    </span>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden ms-3">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Jobs </p>
+                                            <div class="d-flex align-items-center mb-3">
+
+                                                @php
+
+                                                    $total= App\Models\Position::totalPosition();
+
+                                                @endphp
+
+                                                <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value" data-target="{{$total}}">0</span></h4>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+
+
+                </div><!-- end col -->
+
+
+            </div><!-- end row -->
 
             <div class="row">
-                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="col-xl-6">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="chart-title">
-                                <h4>Diversity</h4>
-                                {{--                                    <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>--}}
-                                {{--                              --}}
+                        <div class="card-header d-flex ">
+                            <h4 class="card-title flex-grow-1 mb-0">Upcoming birthdays </h4>
+                            <div class="flex-shrink-0">
+                                <a href="javascript:void(0);" class="btn btn-soft-info btn-sm">Export </a>
                             </div>
+                        </div><!-- end cardheader -->
+                        <div class="card-body">
+
+                            <table id="scroll-vertical" class="table table-bordered dt-responsive nowrap align-middle mdl-data-table" style="width:100%">
+
+                            <thead class="bg-light text-muted">
+                                    <tr>
+                                        <th scope="col">Employee Name</th>
+                                        <th scope="col">Birthday</th>
+                                        <th scope="col">Age </th>
+
+
+                                    </tr><!-- end tr -->
+                                    </thead><!-- thead -->
+
+                                    <tbody>
+
+                                    @php
+
+                                        $anniversaireux= \App\Models\Employe::getListeAnniversaireux();
+                                    @endphp
+
+                                    @foreach( $anniversaireux as $anniversaire )
+                                    <tr>
+
+                                        <td>                                            
+                                            <a href="javascript: void(0);" class="text-reset">{{\App\Models\Employe::getNameEmploye($anniversaire)}}</a>
+                                        </td>
+                                        <td>
+
+                                            <p>{{\App\Models\Employe::getAnniversaireDate($anniversaire)}}</p>
+                                        </td>
+                                        <td>
+
+                                            <span class="badge badge-pill bg-success" data-key="t-new">{{\App\Models\Employe::getAgeEmploye($anniversaire)}}</span>
+
+
+                                        </td>
+
+                                    </tr><!-- end tr -->
+                                    @endforeach
+
+                                    </tbody><!-- end tbody -->
+                                </table><!-- end table -->
+
+
+
+
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+
+                <div class="col-xl-6">
+                    <div class="card">
+                        <div class="card-header d-flex ">
+                            <h4 class="card-title flex-grow-1 mb-0">Ending  contracts  </h4>
+                            <div class="flex-shrink-0">
+                                <a href="javascript:void(0);" class="btn btn-soft-info btn-sm">Export </a>
+                            </div>
+                        </div><!-- end cardheader -->
+                        <div class="card-body">
+
+                            <table id="scroll-vertical" class="table table-bordered dt-responsive nowrap align-middle mdl-data-table" style="width:100%">
+
+                            <thead class="bg-light text-muted">
+                                <tr>
+                                    <th>Employee Name</th>
+                                    <th>End</th>
+                                    <th>day</th>
+
+
+                                </tr><!-- end tr -->
+                                </thead><!-- thead -->
+
+                                <tbody>
+
+                                @php
+
+                                    $contracts  = \App\Models\Contract::getListeEndingContracts();
+                                @endphp
+                                @foreach( $contracts as $contract )
+                                    <tr>
+
+                                        <td>
+                                            
+                                            <a href="javascript: void(0);" class="text-reset">{{\App\Models\Employe::getNameEmploye($contract->employe_id)}}</a>
+                                        </td>
+                                        <td>
+                                            <p>{{$contract->date_end}}</p>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-pill bg-success" data-key="t-new">Ends in {{\App\Models\Contract::getNbJourBetween($contract->id)}} days</span>
+
+
+                                        </td>
+
+                                    </tr><!-- end tr -->
+                                @endforeach
+
+
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+
+
+
+
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+
+
+            </div><!-- end row -->
+
+            <div class="row">
+                <div class="col-xxl-4">
+                    <div class="card card-height-100">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Business </h4>
+                            <div class="flex-shrink-0">
+
+                            </div>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
+
+                            <div class="table-responsive table-card">
+                                <table class="table table-borderless table-nowrap align-middle mb-0">
+                                    <thead class="table-light text-muted">
+                                    <tr>
+                                        <th scope="col">Business </th>
+                                        <th scope="col">Employees </th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    @php
+
+                                        $businesses  = \App\Models\Business::allBusinessActifs();
+                                    @endphp
+                                    @foreach( $businesses as  $businesse )
+
+
+                                    <tr>
+
+                                        <td>
+                                            {{ $businesse->title }}
+                                        </td>
+                                        <td>
+
+                                            @php
+
+                                                $total= App\Models\Employe::totalEmployeeByBusiness($businesse->id);
+
+                                            @endphp
+                                            <span class="badge badge-pill bg-success" data-key="t-new">{{$total}}</span>
+                                        </td>
+
+
+                                    </tr><!-- end tr -->
+
+
+                                    @endforeach
+
+                                    </tbody><!-- end tbody -->
+                                </table><!-- end table -->
+                            </div>
+                        </div><!-- end cardbody -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+
+                <div class="col-xxl-4 col-lg-6">
+                    <div class="card card-height-100">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Diversity </h4>
+                            <div class="flex-shrink-0">
+
+                            </div>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
+
+
                             <canvas id="diversity" ></canvas>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="chart-title">
-                                <h4>Gender</h4>
-                                {{--                                    <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>--}}
-                                {{--                              --}}
+
+                        </div><!-- end cardbody -->
+                    </div><!-- end card -->
+
+
+                </div><!-- end col -->
+
+                <div class="col-xxl-4 col-lg-6">
+                    <div class="card card-height-100">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Gender </h4>
+                            <div class="flex-shrink-0">
+
                             </div>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
                             <canvas id="gender" ></canvas>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 col-lg-4 col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="chart-title">
-                                <h4>myChart</h4>
-                                {{--                                    <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>--}}
-                                {{--                              --}}
-                            </div>
-                            <canvas id="myChart"></canvas>
 
+                        </div><!-- end cardbody -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+
+
+    <div class="customizer-setting d-none d-md-block">
+        <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
+            <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
+        </div>
+    </div>
+
+      <!-- Theme Settings -->
+    <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
+        <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+            <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
+
+            <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div data-simplebar class="h-100">
+                <div class="p-4">
+                    <h6 class="mb-0 fw-bold text-uppercase">Layout</h6>
+                    <p class="text-muted">Choose your layout</p>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-check card-radio">
+                                <input id="customizer-layout01" name="data-layout" type="radio" value="vertical" class="form-check-input">
+                                <label class="form-check-label p-0 avatar-md w-100" for="customizer-layout01">
+                                    <span class="d-flex gap-1 h-100">
+                                        <span class="flex-shrink-0">
+                                            <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                            </span>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            <span class="d-flex h-100 flex-column">
+                                                <span class="bg-light d-block p-1"></span>
+                                                <span class="bg-light d-block p-1 mt-auto"></span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                            <h5 class="fs-13 text-center mt-2">Vertical</h5>
+                        </div>
+                        
+                        <div class="col-4">
+                            <div class="form-check card-radio">
+                                <input id="customizer-layout03" name="data-layout" type="radio" value="twocolumn" class="form-check-input">
+                                <label class="form-check-label p-0 avatar-md w-100" for="customizer-layout03">
+                                    <span class="d-flex gap-1 h-100">
+                                        <span class="flex-shrink-0">
+                                            <span class="bg-light d-flex h-100 flex-column gap-1">
+                                                <span class="d-block p-1 bg-soft-primary mb-2"></span>
+                                                <span class="d-block p-1 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 pb-0 bg-soft-primary"></span>
+                                            </span>
+                                        </span>
+                                        <span class="flex-shrink-0">
+                                            <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                            </span>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            <span class="d-flex h-100 flex-column">
+                                                <span class="bg-light d-block p-1"></span>
+                                                <span class="bg-light d-block p-1 mt-auto"></span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                            <h5 class="fs-13 text-center mt-2">Two Column</h5>
+                        </div>
+                        <!-- end col -->
+                    </div>
+
+                    <h6 class="mt-4 mb-0 fw-bold text-uppercase">Color Scheme</h6>
+                    <p class="text-muted">Choose Light or Dark Scheme.</p>
+
+                    <div class="colorscheme-cardradio">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-check card-radio">
+                                    <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-light" value="light">
+                                    <label class="form-check-label p-0 avatar-md w-100" for="layout-mode-light">
+                                        <span class="d-flex gap-1 h-100">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                    <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-light d-block p-1"></span>
+                                                    <span class="bg-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Light</h5>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-check card-radio dark">
+                                    <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-dark" value="dark">
+                                    <label class="form-check-label p-0 avatar-md w-100 bg-dark" for="layout-mode-dark">
+                                        <span class="d-flex gap-1 h-100">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-soft-light d-flex h-100 flex-column gap-1 p-1">
+                                                    <span class="d-block p-1 px-2 bg-soft-light rounded mb-2"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-soft-light d-block p-1"></span>
+                                                    <span class="bg-soft-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Dark</h5>
+                            </div>
                         </div>
                     </div>
+
+                    <div id="layout-width">
+                        <h6 class="mt-4 mb-0 fw-bold text-uppercase">Layout Width</h6>
+                        <p class="text-muted">Choose Fluid or Boxed layout.</p>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-check card-radio">
+                                    <input class="form-check-input" type="radio" name="data-layout-width" id="layout-width-fluid" value="fluid">
+                                    <label class="form-check-label p-0 avatar-md w-100" for="layout-width-fluid">
+                                        <span class="d-flex gap-1 h-100">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                    <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-light d-block p-1"></span>
+                                                    <span class="bg-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Fluid</h5>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-check card-radio">
+                                    <input class="form-check-input" type="radio" name="data-layout-width" id="layout-width-boxed" value="boxed">
+                                    <label class="form-check-label p-0 avatar-md w-100 px-2" for="layout-width-boxed">
+                                        <span class="d-flex gap-1 h-100 border-start border-end">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                    <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-light d-block p-1"></span>
+                                                    <span class="bg-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Boxed</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="layout-position">
+                        <h6 class="mt-4 mb-0 fw-bold text-uppercase">Layout Position</h6>
+                        <p class="text-muted">Choose Fixed or Scrollable Layout Position.</p>
+
+                        <div class="btn-group radio" role="group">
+                            <input type="radio" class="btn-check" name="data-layout-position" id="layout-position-fixed" value="fixed">
+                            <label class="btn btn-light w-sm" for="layout-position-fixed">Fixed</label>
+
+                            <input type="radio" class="btn-check" name="data-layout-position" id="layout-position-scrollable" value="scrollable">
+                            <label class="btn btn-light w-sm ms-0" for="layout-position-scrollable">Scrollable</label>
+                        </div>
+                    </div>
+                    <h6 class="mt-4 mb-0 fw-bold text-uppercase">Topbar Color</h6>
+                    <p class="text-muted">Choose Light or Dark Topbar Color.</p>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-check card-radio">
+                                <input class="form-check-input" type="radio" name="data-topbar" id="topbar-color-light" value="light">
+                                <label class="form-check-label p-0 avatar-md w-100" for="topbar-color-light">
+                                    <span class="d-flex gap-1 h-100">
+                                        <span class="flex-shrink-0">
+                                            <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                            </span>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            <span class="d-flex h-100 flex-column">
+                                                <span class="bg-light d-block p-1"></span>
+                                                <span class="bg-light d-block p-1 mt-auto"></span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                            <h5 class="fs-13 text-center mt-2">Light</h5>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-check card-radio">
+                                <input class="form-check-input" type="radio" name="data-topbar" id="topbar-color-dark" value="dark">
+                                <label class="form-check-label p-0 avatar-md w-100" for="topbar-color-dark">
+                                    <span class="d-flex gap-1 h-100">
+                                        <span class="flex-shrink-0">
+                                            <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                            </span>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            <span class="d-flex h-100 flex-column">
+                                                <span class="bg-primary d-block p-1"></span>
+                                                <span class="bg-light d-block p-1 mt-auto"></span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                            <h5 class="fs-13 text-center mt-2">Dark</h5>
+                        </div>
+                    </div>
+
+                    <div id="sidebar-size">
+                        <h6 class="mt-4 mb-0 fw-bold text-uppercase">Sidebar Size</h6>
+                        <p class="text-muted">Choose a size of Sidebar.</p>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-check sidebar-setting card-radio">
+                                    <input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-default" value="lg">
+                                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-size-default">
+                                        <span class="d-flex gap-1 h-100">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                    <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-light d-block p-1"></span>
+                                                    <span class="bg-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Default</h5>
+                            </div>
+
+                            
+
+                            <div class="col-4">
+                                <div class="form-check sidebar-setting card-radio">
+                                    <input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-small" value="sm">
+                                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-size-small">
+                                        <span class="d-flex gap-1 h-100">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-light d-flex h-100 flex-column gap-1">
+                                                    <span class="d-block p-1 bg-soft-primary mb-2"></span>
+                                                    <span class="d-block p-1 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 pb-0 bg-soft-primary"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-light d-block p-1"></span>
+                                                    <span class="bg-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Small (Icon View)</h5>
+                            </div>
+
+                           
+                        </div>
+                    </div>
+
+                    <div id="sidebar-view">
+                        <h6 class="mt-4 mb-0 fw-bold text-uppercase">Sidebar View</h6>
+                        <p class="text-muted">Choose Default or Detached Sidebar view.</p>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-check sidebar-setting card-radio">
+                                    <input class="form-check-input" type="radio" name="data-layout-style" id="sidebar-view-default" value="default">
+                                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-view-default">
+                                        <span class="d-flex gap-1 h-100">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                    <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-light d-block p-1"></span>
+                                                    <span class="bg-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Default</h5>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div id="sidebar-color">
+                        <h6 class="mt-4 mb-0 fw-bold text-uppercase">Sidebar Color</h6>
+                        <p class="text-muted">Choose a color of Sidebar.</p>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-check sidebar-setting card-radio" data-bs-toggle="collapse" data-bs-target="#collapseBgGradient.show">
+                                    <input class="form-check-input" type="radio" name="data-sidebar" id="sidebar-color-light" value="light">
+                                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-color-light">
+                                        <span class="d-flex gap-1 h-100">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-white border-end d-flex h-100 flex-column gap-1 p-1">
+                                                    <span class="d-block p-1 px-2 bg-soft-primary rounded mb-2"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-primary"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-light d-block p-1"></span>
+                                                    <span class="bg-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Light</h5>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-check sidebar-setting card-radio" data-bs-toggle="collapse" data-bs-target="#collapseBgGradient.show">
+                                    <input class="form-check-input" type="radio" name="data-sidebar" id="sidebar-color-dark" value="dark">
+                                    <label class="form-check-label p-0 avatar-md w-100" for="sidebar-color-dark">
+                                        <span class="d-flex gap-1 h-100">
+                                            <span class="flex-shrink-0">
+                                                <span class="bg-primary d-flex h-100 flex-column gap-1 p-1">
+                                                    <span class="d-block p-1 px-2 bg-soft-light rounded mb-2"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                                    <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                                </span>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                <span class="d-flex h-100 flex-column">
+                                                    <span class="bg-light d-block p-1"></span>
+                                                    <span class="bg-light d-block p-1 mt-auto"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <h5 class="fs-13 text-center mt-2">Dark</h5>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-link avatar-md w-100 p-0 overflow-hidden border collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBgGradient" aria-expanded="false" aria-controls="collapseBgGradient">
+                                    <span class="d-flex gap-1 h-100">
+                                        <span class="flex-shrink-0">
+                                            <span class="bg-vertical-gradient d-flex h-100 flex-column gap-1 p-1">
+                                                <span class="d-block p-1 px-2 bg-soft-light rounded mb-2"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-soft-light"></span>
+                                            </span>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            <span class="d-flex h-100 flex-column">
+                                                <span class="bg-light d-block p-1"></span>
+                                                <span class="bg-light d-block p-1 mt-auto"></span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </button>
+                                <h5 class="fs-13 text-center mt-2">Gradient</h5>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <div class="collapse" id="collapseBgGradient">
+                            <div class="d-flex gap-2 flex-wrap img-switch p-2 px-3 bg-light rounded">
+
+                                <div class="form-check sidebar-setting card-radio">
+                                    <input class="form-check-input" type="radio" name="data-sidebar" id="sidebar-color-gradient" value="gradient">
+                                    <label class="form-check-label p-0 avatar-xs rounded-circle" for="sidebar-color-gradient">
+                                        <span class="avatar-title rounded-circle bg-vertical-gradient"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check sidebar-setting card-radio">
+                                    <input class="form-check-input" type="radio" name="data-sidebar" id="sidebar-color-gradient-2" value="gradient-2">
+                                    <label class="form-check-label p-0 avatar-xs rounded-circle" for="sidebar-color-gradient-2">
+                                        <span class="avatar-title rounded-circle bg-vertical-gradient-2"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check sidebar-setting card-radio">
+                                    <input class="form-check-input" type="radio" name="data-sidebar" id="sidebar-color-gradient-3" value="gradient-3">
+                                    <label class="form-check-label p-0 avatar-xs rounded-circle" for="sidebar-color-gradient-3">
+                                        <span class="avatar-title rounded-circle bg-vertical-gradient-3"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check sidebar-setting card-radio">
+                                    <input class="form-check-input" type="radio" name="data-sidebar" id="sidebar-color-gradient-4" value="gradient-4">
+                                    <label class="form-check-label p-0 avatar-xs rounded-circle" for="sidebar-color-gradient-4">
+                                        <span class="avatar-title rounded-circle bg-vertical-gradient-4"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="sidebar-img">
+                        <h6 class="mt-4 mb-0 fw-bold text-uppercase">Sidebar Images</h6>
+                        <p class="text-muted">Choose a image of Sidebar.</p>
+
+                        <div class="d-flex gap-2 flex-wrap img-switch">
+                            <div class="form-check sidebar-setting card-radio">
+                                <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-none" value="none">
+                                <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-none">
+                                    <span class="avatar-md w-auto bg-light d-flex align-items-center justify-content-center">
+                                        <i class="ri-close-fill fs-20"></i>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="form-check sidebar-setting card-radio">
+                                <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-01" value="img-1">
+                                <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-01">
+                                    <img src="assets/images/sidebar/img-1.jpg" class="avatar-md w-auto object-cover">
+                                </label>
+                            </div>
+
+                            <div class="form-check sidebar-setting card-radio">
+                                <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-02" value="img-2">
+                                <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-02">
+                                    <img src="assets/images/sidebar/img-2.jpg" class="avatar-md w-auto object-cover">
+                                </label>
+                            </div>
+                            <div class="form-check sidebar-setting card-radio">
+                                <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-03" value="img-3">
+                                <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-03">
+                                    <img src="assets/images/sidebar/img-3.jpg" class="avatar-md w-auto object-cover">
+                                </label>
+                            </div>
+                            <div class="form-check sidebar-setting card-radio">
+                                <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-04" value="img-4">
+                                <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-04">
+                                    <img src="assets/images/sidebar/img-4.jpg" class="avatar-md w-auto object-cover">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-
-
+        </div>
+        <div class="offcanvas-footer border-top p-3 text-center">
             <div class="row">
-
-
-            </div>
-            <div class="row">
-
-                <div class="col-12 col-md-6 col-lg-8 col-xl-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title d-inline-block">Upcoming Birthday</h4> <a href="appointments.html" class="btn btn-primary float-right">View all</a>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead class="d-none">
-                                    <tr>
-                                        <th>Employee Name</th>
-                                        <th>Birthday</th>
-                                        <th>Age</th>
-                                        <th class="text-right">Status</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td style="min-width: 200px;">
-                                            <a class="avatar" href="profile.html">B</a>
-                                            <h2><a href="profile.html">Bernardo Galaviz </a></h2>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">birthday</h5>
-                                            <p>10.5.2022</p>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">Age</h5>
-                                            <p>35</p>
-                                        </td>
-
-                                    </tr>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title d-inline-block">Ending contracts</h4> <a href="appointments.html" class="btn btn-primary float-right">View all</a>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead class="d-none">
-                                    <tr>
-                                        <th>Employee Name</th>
-                                        <th>End</th>
-                                        <th>day</th>
-                                        <th class="text-right">Status</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td style="min-width: 200px;">
-                                            <a class="avatar" href="profile.html">B</a>
-                                            <h2><a href="profile.html">Bernardo Galaviz </a></h2>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">End date</h5>
-                                            <p>10.5.2022</p>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">Day</h5>
-                                            <p>Ends in 5 days</p>
-                                        </td>
-
-                                    </tr>
-
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title d-inline-block">Ending probation periods</h4> <a href="appointments.html" class="btn btn-primary float-right">View all</a>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead class="d-none">
-                                    <tr>
-                                        <th>Employee Name</th>
-                                        <th>End</th>
-                                        <th>day</th>
-                                        <th class="text-right">Status</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td style="min-width: 200px;">
-                                            <a class="avatar" href="profile.html">B</a>
-                                            <h2><a href="profile.html">Bernardo Galaviz </a></h2>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">End date</h5>
-                                            <p>10.5.2022</p>
-                                        </td>
-                                        <td>
-                                            <h5 class="time-title p-0">Day</h5>
-                                            <p>Ends in 5 days</p>
-                                        </td>
-
-                                    </tr>
-
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button>
                 </div>
-                <div class="col-12 col-md-6 col-lg-8 col-xl-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title d-inline-block">NEW JOINERS </h4> <a href="patients.html" class="btn btn-primary float-right">View all</a>
-                        </div>
-                        <div class="card-block">
-                            <div class="table-responsive">
-                                <table class="table mb-0 new-patient-table">
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <img width="28" height="28" class="rounded-circle" src="assets/img/user.jpg" alt="">
-                                            <h2>John Doe</h2>
-                                        </td>
-                                        <td>10.05.2022</td>
-                                        <td><button class="btn btn-primary btn-primary-one float-right">HR, ICD</button></td>
-                                    </tr>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                
             </div>
         </div>
-
     </div>
+
 
 @endsection
 
 @section('js')
 
-    <script src="{{asset('assets/js/Chart.bundle.js')}}"></script>
-    <script src="{{asset('assets/js/chart.js')}}"></script>
-    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js')}}"></script>
+    <!--datatable js-->
+    <script src="{{asset('assets/datatables/1.11.5/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/1.11.5/js/dataTables.bootstrap5.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/responsive/2.2.9/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/buttons.print.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/pdfmake/0.1.53/vfs_fonts.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/pdfmake/0.1.53/pdfmake.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/jszip/3.1.3/jszip.min.js')}}"></script>
+    <script src="{{asset('assets/js/pages/datatables.init.js')}}"></script>
+    <!-- apexcharts -->
+    <script src="{{asset('assets/libs/apexcharts/apexcharts.min.js')}}"></script>
+    <script src="{{asset('assets/libs/chart.js/chart.min.js')}}"></script>
 
     <script>
-
-
         new Chart(document.getElementById("diversity"), {
             type: 'pie',
             data: {
@@ -336,7 +945,6 @@
 
     <script>
 
-
         new Chart(document.getElementById("gender"), {
             type: 'pie',
             data: {
@@ -351,31 +959,7 @@
         });
 
     </script>
-
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ["AVC", "ICD", "IZ", "MIFA", "PLAN", "SOJA"],
-                datasets: [{
-                    data: [62,46,58,28,29,12],
-                    label: "STAFF",
-                    borderColor: "rgb(3,66,106)",
-                    backgroundColor: "rgb(62,149,205,0.1)",
-                    borderWidth:2
-                }, {
-                    data: [6,67,13,11,20,0],
-                    label: "EXT",
-                    borderColor: "rgb(172,13,3)",
-                    backgroundColor:"rgb(196,88,80,0.1)",
-                    borderWidth:2
-                }
-                ]
-            },
-        });
-    </script>
+    <!-- projects js -->
+    <script src="{{asset('assets/js/pages/dashboard-projects.init.js')}}"></script>
 
 @endsection
-
-

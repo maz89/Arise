@@ -1,35 +1,30 @@
-
-<!-- Default Size -->
-<div class="modal animated fadeIn" id="addPrefecture" tabindex="-1" role="dialog">
-    <div class="modal-dialog " role="document" style="max-width: 700px">
+<div class="modal fade" id="addPrefecture" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="title" id="myModalLabel">Add   Prefecture    </h3>
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="myModalLabel"> Add Prefecture </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="modal-body">
+            <form action="#" >
+                <div class="modal-body">
+                    <input type="hidden" id="id-field" />
 
 
-                <form>
+                  
+                 
+                    
+ <div class="mb-3">
+                        <label for="phone-field" class="form-label">Libelle   </label>
+                        <input type="text" id="libelle" name="libelle" class="form-control" placeholder="Libelle    "  />
 
+                          <span class="text-danger" id="erreurLibelle">  </span>
+                      
 
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Libelle <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="libelle" name="libelle">
-                            </div>
+                    </div>
 
-                             <span class="text-danger" id="erreurLibelle">  </span>
-                        </div>
-
-
-
-
-
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Countrie   <span class="text-danger">*</span></label>
-                                <select class="form-control form-select"  name="countrie_id" id="countrie_id" style="width: 100%; height:36px;">
+                      <div class="mb-3">
+                        <label for="phone-field" class="form-label">Countrie  </label>
+                       <select class="form-control form-select"  name="countrie_id" id="countrie_id" style="width: 100%; height:36px;">
 
 
                                     <option value="0">    </option>
@@ -52,32 +47,28 @@
 
 
                                 </select>
-                            </div>
 
-                            <span class="text-danger" id="erreurCountrie">  </span>
-                        </div>
-
+                         
+                       <span class="text-danger" id="erreurCountrie">  </span>
 
                     </div>
 
 
 
+                   
 
-                    <input type="hidden" id="idPrefecture">
+                 
 
-                    <div class="text-center m-t-20">
-                        <button class="btn btn-primary submit-btn" type="button" id="ajouterPrefecture">Enrégistrer </button>
-
-                         <button class="btn btn-primary submit-btn" type="button" id="updatePrefecture">Modifier </button>
-
-
-                         <button class="btn btn-danger submit-btn" type="button" id="annulerPrefecture">Annuler  </button>
-
+                </div>
+                <input type="hidden" id="idPrefecture">
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="ajouterPrefecture"><i class="ri-save-line align-bottom me-1"></i> Save    </button>
+                        <button type="button" class="btn btn-success" id="updatePrefecture"><i class="ri-save-line align-bottom me-1"></i>Update </button>
                     </div>
-                </form>
-
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>

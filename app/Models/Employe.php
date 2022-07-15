@@ -47,7 +47,7 @@ class Employe extends Model
         'civile',
         'photo',
         'contract_id',
-        'categorie_id',
+
         'former_employer_id',
 
         'continent_id',
@@ -59,6 +59,7 @@ class Employe extends Model
         'niveau_id',
         'contract_type_id',
         'departement_id',
+        'business_id',
         'position_id',
 
 
@@ -109,7 +110,7 @@ class Employe extends Model
      * @param  integer $civile
      * @param  integer $photo
      * @param  integer $contract_id
-     * @param  integer $categorie_id
+
      * @param  integer $former_employer_id
      * @param  integer $continent_id
      * @param  integer $region_id
@@ -117,6 +118,8 @@ class Employe extends Model
      * @param  integer $prefecture_id
      * @param  integer $coutume_id
      * @param  integer $band_id
+     * @param  integer $departement_id
+     * @param  integer $business_id
  * @return  Employe
      */
 
@@ -126,8 +129,8 @@ class Employe extends Model
                                        $gender, $type,$is_contrat ,
                                        $address, $password,$phone_perso,
                                        $phone_pro,  $email_perso,$email_pro,$num_cnss,$num_policy,
-                                       $civile, $photo,$contract_id,$categorie_id,$former_employer_id,
-                                       $continent_id,  $region_id,$countrie_id,$prefecture_id,$coutume_id,$band_id)
+                                       $civile, $photo,$contract_id,$former_employer_id,
+                                       $continent_id,  $region_id,$countrie_id,$prefecture_id,$coutume_id,$band_id, $departement_id, $business_id)
     {
 
 
@@ -155,7 +158,7 @@ class Employe extends Model
         $employee->civile = $civile;
         $employee->photo = $photo;
         $employee->contract_id = $contract_id;
-        $employee->categorie_id = $categorie_id;
+
         $employee->former_employer_id = $former_employer_id;
         $employee->continent_id = $continent_id;
         $employee->region_id = $region_id;
@@ -163,6 +166,8 @@ class Employe extends Model
         $employee->prefecture_id = $prefecture_id;
         $employee->coutume_id = $coutume_id;
         $employee->band_id = $band_id;
+        $employee->departement_id = $departement_id;
+        $employee->business_id = $business_id;
 
 
         $employee->created_at = Carbon::now();
@@ -212,7 +217,7 @@ class Employe extends Model
      * @param  integer $civile
      * @param  integer $photo
      * @param  integer $contract_id
-     * @param  integer $categorie_id
+
      * @param  integer $former_employer_id
      * @param  integer $continent_id
      * @param  integer $region_id
@@ -220,6 +225,9 @@ class Employe extends Model
      * @param  integer $prefecture_id
      * @param  integer $coutume_id
      * @param  integer $band_id
+     * @param  integer $departement_id
+     * @param  integer $business_id
+
      * @param int $id
      * @return  Employe
      */
@@ -231,8 +239,8 @@ class Employe extends Model
         $gender, $type,$is_contrat ,
         $address, $password,$phone_perso,
         $phone_pro,  $email_perso,$email_pro,$num_cnss,$num_policy,
-        $civile, $photo,$contract_id,$categorie_id,$former_employer_id,
-        $continent_id,  $region_id,$countrie_id,$prefecture_id,$coutume_id,$band_id, $id)
+        $civile, $photo,$contract_id,$former_employer_id,
+        $continent_id,  $region_id,$countrie_id,$prefecture_id,$coutume_id,$band_id,$departement_id,$business_id, $id)
     {
 
 
@@ -260,7 +268,7 @@ class Employe extends Model
             'civile' => $civile,
             'photo' => $photo,
             'contract_id' => $contract_id,
-            'categorie_id' => $categorie_id,
+
             'former_employer_id' => $former_employer_id,
             'continent_id' => $continent_id,
             'region_id' => $region_id,
@@ -268,6 +276,8 @@ class Employe extends Model
             'prefecture_id' => $prefecture_id,
             'coutume_id' => $coutume_id,
             'band_id' => $band_id,
+            'departement_id' => $departement_id,
+            'business_id' => $business_id,
 
             'id' => $id,
 
@@ -432,8 +442,6 @@ class Employe extends Model
      */
     public function countrie ()
     {
-
-
         return $this->belongsTo(Countrie::class, 'countrie_id');
     }
 
@@ -444,21 +452,17 @@ class Employe extends Model
      */
     public function contract()
     {
-
-
         return $this->belongsTo(Contract::class, 'contract_id');
     }
 
 
     /**
-     * Obtenir la categorie  liée à l' employé
+     * Obtenir le business   liée à l' employé
      *
      */
-    public function categorie()
+    public function business()
     {
-
-
-        return $this->belongsTo(Categorie::class, 'categorie_id');
+        return $this->belongsTo(Business::class, 'business_id');
     }
 
     /**
@@ -467,8 +471,6 @@ class Employe extends Model
      */
     public function formeremployer()
     {
-
-
         return $this->belongsTo(FormerEmployer::class, 'former_employer_id');
     }
 
@@ -478,8 +480,6 @@ class Employe extends Model
      */
     public function continent()
     {
-
-
         return $this->belongsTo(Continent::class, 'continent_id');
     }
 
@@ -489,8 +489,6 @@ class Employe extends Model
      */
     public function region()
     {
-
-
         return $this->belongsTo(Region::class, 'region_id');
     }
 
@@ -502,8 +500,6 @@ class Employe extends Model
      */
     public function prefecture()
     {
-
-
         return $this->belongsTo(Prefecture::class, 'prefecture_id');
     }
 
@@ -513,8 +509,6 @@ class Employe extends Model
      */
     public function coutume()
     {
-
-
         return $this->belongsTo(Coutume::class, 'coutume_id');
     }
 
@@ -525,8 +519,6 @@ class Employe extends Model
      */
     public function band()
     {
-
-
         return $this->belongsTo(Band::class, 'band_id');
     }
 
@@ -536,11 +528,18 @@ class Employe extends Model
      */
     public function departement()
     {
-
-
         return $this->belongsTo(Departement::class, 'departement_id');
     }
 
+
+    /**
+     * Obtenir  la prefecture    liée à l' employé
+     *
+     */
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id');
+    }
 
 
 
@@ -556,11 +555,8 @@ class Employe extends Model
 
         $total = Employe::where ('status','!=',TypeStatus::SUPPRIME)
 
-
             ->orderBy('id','DESC')
             ->count()
-
-
         ;
 
 
@@ -585,12 +581,8 @@ class Employe extends Model
         $total = Employe::where ('status','!=',TypeStatus::SUPPRIME)
 
             ->where ('countrie_id ', '=',$countrie_id )
-
             ->count($countrie_id)
-
-
         ;
-
 
         if($total){
             return $total;
@@ -605,7 +597,6 @@ class Employe extends Model
      * Affiche le nombre total d' employes   par continent
      * @param  int $continent_id
 
-
      * @return  int total
      */
 
@@ -616,16 +607,12 @@ class Employe extends Model
             ->where('continent_id', '=',$continent_id )
             ->orderBy('id','DESC')
             ->count()
-
-
         ;
-
 
         if($total){
             return $total;
         }
         return 0;
-
     }
 
 
@@ -645,10 +632,7 @@ class Employe extends Model
             ->where('region_id', '=',$region_id )
             ->orderBy('id','DESC')
             ->count()
-
-
         ;
-
 
         if($total){
             return $total;
@@ -659,7 +643,7 @@ class Employe extends Model
 
 
     /**
-     * Affiche le nombre total d' employes   par countrie
+     * Affiche le nombre total d' employes   par country
      * @param  int $countrie_id
 
 
@@ -673,10 +657,7 @@ class Employe extends Model
             ->where('countrie_id', '=',$countrie_id )
             ->orderBy('id','DESC')
             ->count()
-
-
         ;
-
 
         if($total){
             return $total;
@@ -684,7 +665,6 @@ class Employe extends Model
         return 0;
 
     }
-
 
     /**
      * Affiche le nombre total d' employes    par niveau
@@ -701,10 +681,7 @@ class Employe extends Model
             ->where('niveau_id', '=',$niveau_id )
             ->orderBy('id','DESC')
             ->count()
-
-
         ;
-
 
         if($total){
             return $total;
@@ -718,7 +695,6 @@ class Employe extends Model
      * Affiche le nombre total d' employes    par contract type
      * @param  int $contract_type_id
 
-
      * @return  int total
      */
 
@@ -729,7 +705,6 @@ class Employe extends Model
             ->where('contract_type_id', '=',$contract_type_id )
             ->orderBy('id','DESC')
             ->count()
-
         ;
 
 
@@ -755,7 +730,6 @@ class Employe extends Model
             ->where('prefecture_id', '=',$prefecture_id )
             ->orderBy('id','DESC')
             ->count()
-
         ;
 
 
@@ -763,14 +737,12 @@ class Employe extends Model
             return $total;
         }
         return 0;
-
     }
 
 
     /**
      * Affiche le nombre total d' employes    par coutume
      * @param  int $coutume_id
-
 
      * @return  int total
      */
@@ -782,7 +754,6 @@ class Employe extends Model
             ->where('coutume_id', '=',$coutume_id )
             ->orderBy('id','DESC')
             ->count()
-
         ;
 
 
@@ -808,6 +779,211 @@ class Employe extends Model
         $total = Employe::where ('status','!=',TypeStatus::SUPPRIME)
 
             ->where('position_id', '=',$position_id )
+            ->orderBy('id','DESC')
+            ->count()
+        ;
+
+        if($total){
+            return $total;
+        }
+        return 0;
+
+    }
+
+    /**
+     * Affiche le nombre total d' employes    par  genre
+     * @param  int $gender
+
+     * @return  int total
+     */
+
+    public static function totalEmployeeByGender ($gender){
+
+        $total = Employe::where ('status','!=',TypeStatus::SUPPRIME)
+
+            ->where('gender', '=',$gender )
+            ->orderBy('id','DESC')
+            ->count()
+        ;
+
+
+        if($total){
+            return $total;
+        }
+        return 0;
+
+    }
+
+
+    /**
+     * Affiche le nombre total d' employes    par  genre
+     * @param  int $gender
+
+     * @return  int total
+     */
+
+    public static function totalEmployeeByType ($type){
+
+        $total = Employe::where ('status','!=',TypeStatus::SUPPRIME)
+
+            ->where('type', '=',$type )
+            ->orderBy('id','DESC')
+            ->count()
+        ;
+
+
+        if($total){
+            return $total;
+        }
+        return 0;
+    }
+
+
+
+    /**
+     * Retourne la date d' anniversaire d 'un employe
+     * @param  int $id
+
+     * @return  string $date_anniversaire
+     */
+
+    public static function getAnniversaireDate  ($id){
+
+        $employe = Employe::rechercheEmployeeById($id);
+
+        $date = \Carbon\Carbon::parse($employe->birth_date_correct)->translatedFormat('d/m/Y');
+
+        $mois = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('m');
+        $days = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('d');
+        $annee = \Carbon\Carbon::now()->format('Y');
+        $date_anniversaire = "$days/$mois/$annee";
+        return $date_anniversaire;
+
+    }
+
+
+    /**
+     * Retourne la date d' anniversaire d 'un employe
+     * @param  int $id
+
+
+     * @return  int $days
+     */
+
+    public static function getNbJourBetween  ($id){
+
+        $employe = Employe::rechercheEmployeeById($id);
+
+        $diff_in_days = 0;
+
+        $date_du_jour = \Carbon\Carbon::today()->format('d/m/Y');
+
+        $to = \Carbon\Carbon::createFromFormat('d/m/Y', $date_du_jour);
+        $from = \Carbon\Carbon::createFromFormat('d/m/Y', Employe::getAnniversaireDate($id));
+
+        if ($from > $to )
+        {
+            $diff_in_days = $to->diffInDays($from, false);
+        }
+
+
+        return $diff_in_days;
+
+    }
+
+
+    /**
+     * Retourne la liste des anniversaireux du mois
+
+
+
+     * @return  array $anniversaireux
+     */
+
+    public static function getListeAnniversaireux  (){
+
+        $anniversaireux = array();
+
+        $employes = Employe::allEmployeeActifs();
+
+         foreach ($employes as $employe ){
+
+             $nbjours = Employe::getNbJourBetween($employe->id);
+
+             if(($nbjours < 30) and $nbjours > 0){
+
+
+
+                 array_push($anniversaireux, $employe->id);
+
+
+             }
+
+         }
+
+        $date_du_jour = \Carbon\Carbon::now()->format('d/m/Y');
+
+        return  $anniversaireux;
+
+    }
+
+
+
+
+    /**
+     * Retourne le nom  d 'un employe
+     * @param  int $id
+
+
+     * @return  int $days
+     */
+
+    public static function getNameEmploye  ($id){
+
+        $employe = Employe::rechercheEmployeeById($id);
+
+        $nom  =  $employe->first_name.' '.$employe->last_name;
+
+
+        return $nom;
+
+    }
+
+
+    /**
+     * Retourne le nom  d 'un employe
+     * @param  int $id
+
+
+     * @return  int $days
+     */
+
+    public static function getAgeEmploye  ($id){
+
+        $employe = Employe::rechercheEmployeeById($id);
+
+        $age = Carbon::parse($employe->birth_date_correct)->diff(Carbon::now())->y;
+
+
+        return $age;
+
+    }
+
+
+
+    /**
+     * Affiche le nombre total d' employes    par   business
+     * @param  int $business_id
+
+
+     * @return  int total
+     */
+
+    public static function totalEmployeeByBusiness ($business_id){
+
+        $total = Employe::where ('status','!=',TypeStatus::SUPPRIME)
+
+            ->where('business_id', '=',$business_id )
             ->orderBy('id','DESC')
             ->count()
 

@@ -260,8 +260,9 @@ class Departure extends Model
         ];
     }
 
+
     /**
-     * Obtenir l
+     * Obtenir le traveler   lié au permit
      *
      */
     public function traveler()
@@ -270,5 +271,6 @@ class Departure extends Model
 
         return $this->belongsTo(Traveler::class, 'traveler_id');
     }
+
 
 }

@@ -1,46 +1,42 @@
-
-<!-- Default Size -->
-<div class="modal animated fadeIn" id="addNature" tabindex="-1" role="dialog">
-    <div class="modal-dialog " role="document" style="max-width: 700px">
+<div class="modal fade" id="addNature" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="title" id="myModalLabel">Add   Nature    </h3>
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="myModalLabel"> Add Nature </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="modal-body">
+            <form action="#" >
+                <div class="modal-body">
+                    <input type="hidden" id="id-field" />
 
 
-                <form>
+                     
 
+                    
+ <div class="mb-3">
+                        <label for="phone-field" class="form-label">Date    </label>
+                        <input type="text" id="libelle" name="libelle" class="form-control" placeholder="Libelle  "  />
 
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Libelle <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="libelle" name="libelle">
-                            </div>
-
-                             <span class="text-danger" id="erreurLibelle">  </span>
-                        </div>
-
+                          <span class="text-danger" id="erreurLibelle">  </span>
+                      
 
                     </div>
 
 
-                    <input type="hidden" id="idNature">
+                   
 
-                    <div class="text-center m-t-20">
-                        <button class="btn btn-primary submit-btn" type="button" id="ajouterNature">Enrégistrer </button>
+                 
 
-                         <button class="btn btn-primary submit-btn" type="button" id="updateNature">Modifier </button>
-
-
-                         <button class="btn btn-danger submit-btn" type="button" id="annulerNature">Annuler  </button>
-
+                </div>
+                <input type="hidden" id="idNature">
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="ajouterNature"><i class="ri-save-line align-bottom me-1"></i> Save    </button>
+                        <button type="button" class="btn btn-success" id="updateNature"><i class="ri-save-line align-bottom me-1"></i>Update </button>
                     </div>
-                </form>
-
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>

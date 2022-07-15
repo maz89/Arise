@@ -15,11 +15,7 @@ namespace App\Types;
 
 class StatutContrat
 {
-
-
     const EN_COURS = 1;
      const EXPIRE = 2;
-     const ANNULE = 3;
-
-
+     const INTERROMPU = 3;
 }

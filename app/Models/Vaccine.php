@@ -159,7 +159,7 @@ class Vaccine extends Model
             ->first();
 
 
-        if ($vaccine === null) {
+        if ($vaccine ) {
             return 1;
         }
         return 0;

@@ -238,8 +238,11 @@ class Permit extends Model
 
         ];
     }
+
+
+
     /**
-     * Obtenir l
+     * Obtenir le traveler   lié au permit
      *
      */
     public function traveler()
@@ -247,6 +250,41 @@ class Permit extends Model
 
 
         return $this->belongsTo(Traveler::class, 'traveler_id');
+    }
+
+
+
+    /**
+     * Retourne le nombre de jours
+     * @param  int $id
+
+
+     * @return  int $days
+     */
+
+    public static function getNbJourBetween  ($id){
+
+        $permit = Permit::recherchePermitById($id);
+
+        $date_du_jour = \Carbon\Carbon::now()->format('d/m/Y');
+        $date = \Carbon\Carbon::parse($permit->expiry)->translatedFormat('d/m/Y');
+
+
+        $mois = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('m');
+        $days = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('d');
+        $annee = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('Y');
+
+        $date_expiry = "$days/$mois/$annee";
+
+
+        $to = \Carbon\Carbon::createFromFormat('d/m/Y', $date_du_jour);
+        $from = \Carbon\Carbon::createFromFormat('d/m/Y', $date_expiry);
+
+        $diff_in_days = $to->diffInDays($from, false);
+
+
+        return $diff_in_days;
+
     }
 
 

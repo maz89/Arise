@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Types\TypeStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

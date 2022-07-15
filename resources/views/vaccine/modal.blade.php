@@ -1,40 +1,43 @@
-
-<!-- Default Size -->
-<div class="modal animated fadeIn" id="addVaccine" tabindex="-1" role="dialog">
-    <div class="modal-dialog " role="document" style="max-width: 700px">
+<div class="modal fade" id="addVaccine" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="title" id="myModalLabel">Add   Vaccine    </h3>
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="myModalLabel"> Add Vaccine </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="modal-body">
+            <form action="#" >
+                <div class="modal-body">
+                    <input type="hidden" id="id-field" />
 
 
-                <form>
 
 
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Name  <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="name" name="name">
-                            </div>
 
-                             <span class="text-danger" id="erreurName">  </span>
-                        </div>
+ <div class="mb-3">
+                        <label for="phone-field" class="form-label">Name </label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Name    "  />
 
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Nb doses   <span class="text-danger">*</span></label>
-                                <input class="form-control" type="integer" id="nb_doses" name="nb_doses">
-                            </div>
+                          <span class="text-danger" id="rreurname">  </span>
 
-                            <span class="text-danger" id="erreurName">  </span>
-                        </div>
 
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Disease    <span class="text-danger">*</span></label>
-                                <select class="form-control form-select"  name="disease_id" id="disease_id" style="width: 100%; height:36px;">
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="phone-field" class="form-label">Nb doses   </label>
+                        <input type="text" id="nb_doses" name="nb_doses" class="form-control" placeholder="Doses     "  />
+
+                          <span class="text-danger" id="erreurnb_doses">  </span>
+
+
+                    </div>
+
+
+
+
+                      <div class="mb-3">
+                        <label for="phone-field" class="form-label">Disease  </label>
+                       <select class="form-control form-select"  name="disease_id" id="disease_id" style="width: 100%; height:36px;">
 
 
                                     <option value="0">    </option>
@@ -49,38 +52,30 @@
 
                                     @foreach( $diseases  as $disease )
 
-                                        <option value="{{$disease->id}}">{{$disease->libelle }}</option>
+                                        <option value="{{$disease->id}}">{{$disease->libelle  }}</option>
 
 
                                     @endforeach
 
+
+
                                 </select>
-                            </div>
 
-                            <span class="text-danger" id="erreurdisease_id">  </span>
-                        </div>
-
+                       <span class="text-danger" id="erreurdisease_id">  </span>
 
                     </div>
 
 
 
-
-                    <input type="hidden" id="idVaccine">
-
-                    <div class="text-center m-t-20">
-                        <button class="btn btn-primary submit-btn" type="button" id="ajouterVaccine">Enrégistrer </button>
-
-                         <button class="btn btn-primary submit-btn" type="button" id="updateVaccine">Modifier </button>
-
-
-                         <button class="btn btn-danger submit-btn" type="button" id="annulerVaccine">Annuler  </button>
-
+                <input type="hidden" id="idVaccine">
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="ajouterVaccine"><i class="ri-save-line align-bottom me-1"></i> Save    </button>
+                        <button type="button" class="btn btn-success" id="updateVaccine"><i class="ri-save-line align-bottom me-1"></i>Update </button>
                     </div>
-                </form>
-
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('titre')
+@section('libelle')
     Tasks - List
 
 @endsection
@@ -8,9 +8,17 @@
 
 @section('css')
 
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/select2.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" />
+    <link href="{{asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
+    <!--datatable css-->
+
+    <link rel="stylesheet" href="{{asset('assets/datatables/1.11.5/css/dataTables.bootstrap5.min.css')}}" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="{{asset('assets/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css')}}" />
+
+    <link rel="stylesheet" href="{{asset('assets/datatables/buttons/2.2.2/css/buttons.dataTables.min.css')}}">
+
+
+
 @endsection
 
 
@@ -20,42 +28,89 @@
 
 
 
-    <div class="page-wrapper">
-        <div class="content">
+
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page libelle -->
             <div class="row">
-                <div class="col-sm-5 col-5">
-                    <h4 class="page-title">Tasks </h4>
-                </div>
-                <div class="col-sm-7 col-7 text-right m-b-30">
-                    <a href="" class="btn btn-primary btn-rounded" data-toggle="modal"     data-target="#addTask"><i class="fa fa-plus"></i> Add Task</a>
+                <div class="col-12">
+                    <div class="page-libelle-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Tasks </h4>
+
+                        <div class="page-libelle-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard  </a></li>
+                                <li class="breadcrumb-item active">Tasks </li>
+                            </ol>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+            <!-- end page libelle -->
+
             <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-striped custom-table mb-0 datatable">
-                            <thead>
-                            <tr>
-                                <th style="width: 5%">#</th>
-                                <th>Name </th>
+                <div class="col-lg-12">
+                    <div class="card" id="customerList">
+                        <div class="card-header border-bottom-dashed">
+
+                            <div class="row g-4 align-items-center">
+                                <div class="col-sm">
+                                    <div>
+                                        <h5 class="card-libelle mb-0">List of  Tasks </h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div>
+
+                                        <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#addTask"><i class="ri-add-line align-bottom me-1"></i> Add Task </button>
+
+                                       <button type="button" class="btn btn-info"><i class="ri-printer-fill align-bottom me-1"></i> Export</button>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div>
+
+                                @if (count($tasks) > 0)
+                                    <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
+
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" style="width: 50px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                                </div>
+                                            </th>
+
+                                            <th>Name </th>
                                 <th>Date </th>
                                 <th>Description </th>
                                 <th>Status</th>
 
-                                <th class="text-right"style="width: 10%">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                $i = 1;
+                                            <th>Actions</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach( $tasks as $task )
+
+                                            <tr>
+                                                <td data-id="{{$task->id}}">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
+                                                    </div>
+                                                </td>
 
 
-                            @endphp
 
-                            @foreach( $tasks as $task )
-                                <tr>
-                                    <td data-id="{{$task->id}}">{{ $i++ }}</td>
-                                    <td>  {{ $task->libelle }}</td>
+                                  <td>  {{ $task->libelle }}</td>
 
                                     <td>
 
@@ -66,29 +121,30 @@
                                     </td>
 
                                     <td>  {{ $task->description }}</td>
-                                    <td>
 
-                                        {{ $task->accomplie }}
-
-
-                                    </td>
 
 
                                     <td>
 
-                                        @if($task->type == \App\Types\StatutTask::EN_COURS)
-
-                                            <span class="custom-badge status-red">En cours  </span>
+                                        @if($task->accomplie == \App\Types\StatutTask::EN_COURS)
 
 
-                                        @elseif($contract->type == \App\Types\StatutTask::ANNULE)
 
-                                            <span class="custom-badge status-red">Annulé   </span>
+                                            <span class="badge badge-pill bg-danger" data-key="t-new">En cours </span>
+
+
+                                        @elseif($task->accomplie == \App\Types\StatutTask::ANNULE)
+
+
+
+                                            <span class="badge badge-pill bg-danger" data-key="t-new">Annulé </span>
 
 
                                         @else
 
-                                            <span class="custom-badge status-green">Terminé   </span>
+
+
+                                            <span class="badge badge-pill bg-danger" data-key="t-new">Terminé  </span>
 
 
                                         @endif
@@ -97,36 +153,71 @@
 
 
 
+                                  <td>
 
-                                    <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item modifierTask" href="#"><i class="fa fa-pencil m-r-5"></i> Edit </a>
+                                                    <ul class="list-inline hstack gap-2 mb-0">
+                                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" libelle="Modifier">
+                                                            <a href="" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn modifierTask ">
+                                                                <i class="ri-pencil-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" libelle="Supprimer">
+                                                            <a class="text-danger d-inline-block remove-item-btn supprimerTask" data-bs-toggle="modal" href="">
+                                                                <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
 
 
 
-                                                <a class="dropdown-item supprimerTask" href="#" ><i class="fa fa-trash-o m-r-5 "></i> Delete </a>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="table-responsive table-card mb-1">
 
 
 
+
+                                        @else
+
+
+                                            <div class="noresult" >
+                                                <div class="text-center">
+
+                                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+
+                                                    <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                    <p class="text-muted"> We did not find any Tasks  for you search.</p>
+
+
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
 
 
-                            @endforeach
+                                        @endif
+                                    </div>
 
-                            </tbody>
-                        </table>
+                            </div>
+                            @include('task.modal')
+
+
+                        </div>
                     </div>
+
                 </div>
+                <!--end col-->
             </div>
+            <!--end row-->
+
         </div>
-
-        @include('task.modal')
-
+        <!-- container-fluid -->
     </div>
 
 
@@ -135,14 +226,35 @@
 
 
 @section('js')
-    <script src="{{asset('assets/js/select2.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('assets/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
 
 
 
-    <script>
+
+    <script src="{{asset('assets/jquery-3.6.0.min.js')}}" ></script>
+
+    <!--datatable js-->
+    <script src="{{asset('assets/datatables/1.11.5/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/1.11.5/js/dataTables.bootstrap5.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/responsive/2.2.9/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/buttons.print.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/pdfmake/0.1.53/vfs_fonts.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/pdfmake/0.1.53/pdfmake.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/jszip/3.1.3/jszip.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/pages/datatables.init.js')}}"></script>
+
+
+
+
+
+    <!-- Sweet Alerts js -->
+    <script src="{{asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
+
+
+
+<script>
 
 
         jQuery(document).ready(function(){
@@ -223,7 +335,7 @@
 
             let allValid = true;
             let libelle = ($('#libelle').val());
-            let date_task =  $('#validity').val();
+            let date_task =  $('#date_task').val();
             let description =  $('#description').val();
             let accomplie =  parseInt($('#accomplie').val());
 
@@ -534,5 +646,6 @@
 
 
     </script>
-@endsection
 
+
+@endsection

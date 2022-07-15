@@ -1,211 +1,89 @@
-
-<!-- Default Size -->
-<div class="modal animated fadeIn" id="addAssignment" tabindex="-1" role="dialog">
-    <div class="modal-dialog " role="document" style="max-width: 1100px">
+<div class="modal fade" id="addAssignment" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="title" id="myModalLabel">Add   Assignment    </h3>
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="myModalLabel"> Add Assignment </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="modal-body">
+            <form action="#" >
+                <div class="modal-body">
+                    <input type="hidden" id="id-field" />
 
 
-                <form>
 
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Employee   </label>
+                        <select class="form-control" data-choices data-choices-search-false name="employe_id" id="employe_id">
 
-                    <div class="row">
+                            @php
 
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Employee    <span class="text-danger">*</span></label>
-                                <select class="form-control form-select"  name="employee_id" id="employee_id" style="width: 100%; height:36px;">
+                                $employes = \App\Models\Employe::allEmployeeActifs();
+                            @endphp
 
+                            @foreach($employes as $employe )
 
-                                    <option value="0">    </option>
+                                <option value="{{$employe->id}}">{{$employe->first_name.' '.$employe->last_name}} </option>
 
-                                    @php
+                            @endforeach
 
-                                        $employes = App\Models\Employe::allEmployeeActifs();
+                        </select>
 
-                                    @endphp
 
+                        <span class="text-danger" id="erreurEmployee_id">  </span>
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Position   </label>
+                        <select class="form-control" data-choices data-choices-search-false name="position_id" id="position_id">
 
-                                    @foreach( $employes  as $employe )
+                            @php
 
-                                        <option value="{{$employe->id}}">{{$employe->first_name . ' '.$employe->last_name  }}</option>
+                                $positions = \App\Models\Position::allPositionActifs();
+                            @endphp
 
+                            @foreach($positions as $position )
 
-                                    @endforeach
+                                <option value="{{$position->id}}">{{$position->job_title}} </option>
 
+                            @endforeach
 
 
-                                </select>
-                            </div>
 
-                            <span class="text-danger" id="erreurEmployee_id">  </span>
-                        </div>
+                        </select>
 
 
+                        <span class="text-danger" id="erreurposition_id">  </span>
+                    </div>
 
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Date start   <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" id="date_start" name="date_start">
-                            </div>
+                    <div class="mb-3">
+                        <label for="email-field" class="form-label">Date start  </label>
+                        <input type="date" id="date_start" name="date_start" class="form-control" placeholder="Date  start  "   />
+                        <span class="text-danger" id="erreurDate_start">  </span>
 
-                            <span class="text-danger" id="erreurDate_start">  </span>
-                        </div>
 
+                    </div>
 
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Date end     <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" id="date_end" name="date_end">
-                            </div>
+                    <div class="mb-3">
 
-                            <span class="text-danger" id="erreurDate_end">  </span>
-                        </div>
-
-
-
-
-
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Position    <span class="text-danger">*</span></label>
-                                <select class="form-control form-select"  name="position_id" id="position_id" style="width: 100%; height:36px;">
-
-
-                                    <option value="0">    </option>
-
-                                    @php
-
-                                        $positions = App\Models\Position::allPositionActifs();
-
-                                    @endphp
-
-
-
-                                    @foreach( $positions  as $position )
-
-                                        <option value="{{$position->id}}">{{$position->job_title  }}</option>
-
-
-                                    @endforeach
-
-
-
-                                </select>
-                            </div>
-
-                            <span class="text-danger" id="erreurposition_id">  </span>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Is Manager ?     </label>
-                                <select class="form-control form-select"  name="is_manager" id="is_manager" style="width: 100%; height:36px;">
-
-
-                                    <option value="0"> No    </option>
-                                    <option value="1">  Yes  </option>
-
-
-                                </select>
-                            </div>
-
-
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-{{--                                <label>Department     </label>--}}
-                                <select class="form-control form-select"  name="department_id" id="department_id" style="width: 100%; height:36px;">
-
-
-                                    <option value="0">    </option>
-
-                                    @php
-
-                                        $departements = App\Models\Departement::allDepartementActifs();
-
-                                    @endphp
-
-
-
-                                    @foreach( $departements  as $departement )
-
-                                        <option value="{{$departement->id}}">{{$departement->title  }}</option>
-
-
-                                    @endforeach
-
-
-
-                                </select>
-                            </div>
-
-
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-{{--                                <label>Business      </label>--}}
-                                <select class="form-control form-select"  name="business_id" id="business_id" style="width: 100%; height:36px;">
-
-
-                                    <option value="0">    </option>
-
-                                    @php
-
-                                        $businesses = App\Models\Business::allBusinessActifs();
-
-                                    @endphp
-
-
-
-                                    @foreach( $businesses  as  $businesse )
-
-                                        <option value="{{ $businesse->id}}">{{ $businesse->title  }}</option>
-
-
-                                    @endforeach
-
-
-
-                                </select>
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-
+                        <label for="phone-field" class="form-label">Date  end  </label>
+                        <input type="date" id="date_end" name="date_end" class="form-control" placeholder="Date  end  " required />
+                        <span class="text-danger" id="erreurDate_end">  </span>
 
                     </div>
 
 
 
 
-                    <input type="hidden" id="idAssignment">
-
-                    <div class="text-center m-t-20">
-                        <button class="btn btn-primary submit-btn" type="button" id="ajouterAssignment">Enrégistrer </button>
-
-                         <button class="btn btn-primary submit-btn" type="button" id="updateAssignment">Modifier </button>
-
-
-                         <button class="btn btn-danger submit-btn" type="button" id="annulerAssignment">Annuler  </button>
-
+                </div>
+                <input type="hidden" id="idAssignment">
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="ajouterAssignment"><i class="ri-save-line align-bottom me-1"></i> Save    </button>
+                        <button type="button" class="btn btn-success" id="updateAssignment"><i class="ri-save-line align-bottom me-1"></i>Update </button>
                     </div>
-                </form>
-
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>

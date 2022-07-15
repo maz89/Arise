@@ -61,6 +61,7 @@ class ArrivalController extends Controller
 
         $data = Arrival::isValid(
             $request->date_arrival,
+            $request->time_arrival,
             $request->flight,
             $request->border,
             $request->traveler_id,
@@ -75,6 +76,7 @@ class ArrivalController extends Controller
 
             Arrival::addArrival(
                 $request->date_arrival,
+                $request->time_arrival,
                 $request->flight,
                 $request->border,
                 $request->traveler_id,
@@ -122,6 +124,7 @@ class ArrivalController extends Controller
 
         $data = Arrival::isValid(
             $request->date_arrival,
+            $request->time_arrival,
             $request->flight,
             $request->border,
             $request->traveler_id,
@@ -135,6 +138,7 @@ class ArrivalController extends Controller
             // UpDate du Arrival
             Arrival::updateArrival(
                 $request->date_arrival,
+                $request->time_arrival,
                 $request->flight,
                 $request->border,
                 $request->traveler_id,
@@ -165,10 +169,10 @@ class ArrivalController extends Controller
         // check data deleted or not
         if ($delete == 1) {
             $success = true;
-            $message = "Suppression effectuée avec succès ";
+            $message = "Delete with success ";
         } else {
             $success = true;
-            $message = "L arrival  n est pas trouvé ";
+            $message = "Arrival not found ";
         }
 
 

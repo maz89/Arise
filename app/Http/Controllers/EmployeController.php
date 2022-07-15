@@ -97,7 +97,7 @@ class EmployeController extends Controller
                $request->civile,
                $request->photo,
                $request->contract_id,
-               $request->categorie_id,
+
                $request->former_employer_id,
                $request->continent_id,
                $request->region_id,
@@ -105,6 +105,8 @@ class EmployeController extends Controller
                $request->prefecture_id,
                $request->coutume_id,
                $request->band_id,
+               $request->departement_id,
+               $request->business_id,
 
 
 
@@ -187,7 +189,7 @@ class EmployeController extends Controller
                 $request->civile,
                 $request->photo,
                 $request->contract_id,
-                $request->categorie_id,
+
                 $request->former_employer_id,
                 $request->continent_id,
                 $request->region_id,
@@ -195,6 +197,8 @@ class EmployeController extends Controller
                 $request->prefecture_id,
                 $request->coutume_id,
                 $request->band_id,
+                $request->departement_id,
+                $request->business_id,
                 $id
 
             );

@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('titre')
+@section('title')
     Businesses - List
 
 @endsection
@@ -8,9 +8,17 @@
 
 @section('css')
 
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/select2.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" />
+    <link href="{{asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
+    <!--datatable css-->
+
+    <link rel="stylesheet" href="{{asset('assets/datatables/1.11.5/css/dataTables.bootstrap5.min.css')}}" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="{{asset('assets/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css')}}" />
+
+    <link rel="stylesheet" href="{{asset('assets/datatables/buttons/2.2.2/css/buttons.dataTables.min.css')}}">
+
+
+
 @endsection
 
 
@@ -20,96 +28,172 @@
 
 
 
-    <div class="page-wrapper">
-        <div class="content">
+
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
             <div class="row">
-                <div class="col-sm-5 col-5">
-                    <h4 class="page-title">Businesses </h4>
-                </div>
-                <div class="col-sm-7 col-7 text-right m-b-30">
-                    <a href="" class="btn btn-primary btn-rounded" data-toggle="modal"     data-target="#addBusinesse"><i class="fa fa-plus"></i> Add Businesse</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-striped custom-table mb-0 datatable">
-                            <thead>
-                            <tr>
-                                <th style="width: 5%">#</th>
-                                <th>Code   </th>
-                                <th>Title    </th>
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Businesses </h4>
 
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard  </a></li>
+                                <li class="breadcrumb-item active">Businesses </li>
+                            </ol>
+                        </div>
 
-{{--                                <th>Employees  </th>--}}
-
-
-                                <th class="text-right"style="width: 10%">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                $i = 1;
-
-
-                            @endphp
-
-                            @foreach( $businesses as $businesse )
-                                <tr>
-                                    <td data-id="{{$businesse->id}}">{{ $i++ }}</td>
-                                    <td>  {{ $businesse->code  }}</td>
-                                    <td>  {{ $businesse->title  }}</td>
-
-
-
-
-                                   {{-- <td>
-
-                                        @php
-
-                                            $total= App\Models\Employe::totalEmployeeByBusinesse($businesse->id);
-
-                                        @endphp
-                                        {{$total}}
-
-
-
-                                    </td>--}}
-
-
-
-
-
-                                    <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item modifierBusinesse" href="#"><i class="fa fa-pencil m-r-5"></i> Modifier </a>
-
-
-
-                                                <a class="dropdown-item supprimerBusinesse" href="#" ><i class="fa fa-trash-o m-r-5 "></i> Suprimer </a>
-
-
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                            @endforeach
-
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card" id="customerList">
+                        <div class="card-header border-bottom-dashed">
+
+                            <div class="row g-4 align-items-center">
+                                <div class="col-sm">
+                                    <div>
+                                        <h5 class="card-title mb-0">List of  Businesses </h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div>
+
+                                        <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#addBusiness"><i class="ri-add-line align-bottom me-1"></i> Add Business </button>
+
+{{--                                        <button type="button" class="btn btn-info"><i class="ri-printer-fill align-bottom me-1"></i> Export</button>--}}
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div>
+
+                                @if (count($businesses) > 0)
+                                    <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
+
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" style="width: 50px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                                </div>
+                                            </th>
+
+                                            <th>Code  </th>
+                                            <th>Title </th>
+                                            <th>Nb employees   </th>
+
+
+                                            <th>Actions</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach( $businesses as $businesse )
+
+                                            <tr>
+                                                <td data-id="{{$businesse->id}}">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{ $businesse->code }}
+                                                </td>
+
+                                                <td>{{ $businesse->title }}</td>
+                                                 <td>
+
+                                        @php
+
+                                            $total= App\Models\Employe::totalEmployeeByBusiness($businesse->id);
+
+                                        @endphp
+
+
+                                                     <span class="badge badge-pill bg-danger" data-key="t-new">  {{$total}}</span>
+
+
+
+
+                                                 </td>
+
+
+                                                <td>
+
+                                                    <ul class="list-inline hstack gap-2 mb-0">
+                                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Modifier">
+                                                            <a href="" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn modifierBusiness ">
+                                                                <i class="ri-pencil-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Supprimer">
+                                                            <a class="text-danger d-inline-block remove-item-btn supprimerBusiness" data-bs-toggle="modal" href="">
+                                                                <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
+
+
+
+                                        </tbody>
+                                    </table>
+
+                                    <div class="table-responsive table-card mb-1">
+
+
+
+
+                                        @else
+
+
+                                            <div class="noresult" >
+                                                <div class="text-center">
+
+                                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+
+                                                    <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                    <p class="text-muted"> We did not find any Businesss  for you search.</p>
+
+
+                                                </div>
+                                            </div>
+
+
+                                        @endif
+                                    </div>
+
+                            </div>
+                            @include('business.modal')
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+
         </div>
-
-
-        @include('business.modal')
-
+        <!-- container-fluid -->
     </div>
 
 
@@ -118,10 +202,32 @@
 
 
 @section('js')
-    <script src="{{asset('assets/js/select2.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('assets/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+
+
+
+
+    <script src="{{asset('assets/jquery-3.6.0.min.js')}}" ></script>
+
+    <!--datatable js-->
+    <script src="{{asset('assets/datatables/1.11.5/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/1.11.5/js/dataTables.bootstrap5.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/responsive/2.2.9/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/buttons.print.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/pdfmake/0.1.53/vfs_fonts.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/pdfmake/0.1.53/pdfmake.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/jszip/3.1.3/jszip.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/pages/datatables.init.js')}}"></script>
+
+
+
+
+
+    <!-- Sweet Alerts js -->
+    <script src="{{asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
+
 
 
 
@@ -132,41 +238,40 @@
 
 
 
-            $( "#annulerBusinesse" ).click(function( event ) {
+            $( "#updateBusiness" ).click(function( event ) {
                 event.preventDefault();
 
 
-                fermerBusinesse()
+                updateBusiness()
             });
 
 
-            $( "#updateBusinesse" ).click(function( event ) {
+
+
+
+            $( "#ajouterBusiness" ).click(function( event ) {
                 event.preventDefault();
 
 
-                updateBusinesse()
+                ajouterBusiness()
             });
 
 
-            $( "#ajouterBusinesse" ).click(function( event ) {
-                event.preventDefault();
-
-
-                ajouterBusinesse()
-            });
-
-
-            $( ".modifierBusinesse" ).click(function( event ) {
+            $( ".modifierBusiness" ).click(function( event ) {
                 event.preventDefault();
 
                 let currentRow=$(this).closest("tr");
 
                 let id = parseInt(currentRow.find("td:eq(0)").attr('data-id'));
-                modifierBusinesse(id)
+                modifierBusiness(id)
             });
 
 
-            $( ".supprimerBusinesse" ).click(function( event ) {
+
+
+
+
+            $( ".supprimerBusiness" ).click(function( event ) {
                 event.preventDefault();
 
                 let currentRow=$(this).closest("tr");
@@ -181,39 +286,37 @@
 
         function clearData() {
 
-            $('#libelle').val('');
-
+            $('#code').val('');
+            $('#title').val('');
 
             $('#erreurCode').text('');
+            $('#erreurtitle').text('');
 
-
-
-            $("#ajouterBusinesse").show();
-            $("#updateBusinesse").hide();
+            $("#ajouterBusiness").show();
+            $("#updateBusiness").hide();
 
         }
 
 
 
-        //------------------------ fonction d' ajout de Businesse
-        function ajouterBusinesse() {
+        //------------------------ fonction d' ajout de Business
+        function ajouterBusiness() {
 
             let allValid = true;
             let code =  $('#code').val();
             let title =  $('#title').val();
 
 
-
             if(code ==='')
             {
-                $('#erreurCode').text("Le code   est obligatoire " );
+                $('#erreurCode').text("Required " );
                 allValid = false;
 
             }
 
-            if(title ==='')
+            if(title === '')
             {
-                $('#erreurTitle').text("Le title   est obligatoire " );
+                $('#erreurtitle').text("Required " );
                 allValid = false;
 
             }
@@ -232,19 +335,22 @@
                         code:code,
                         title:title,
 
+
                     } ,
 
                     success: function(data) {
 
+                        console.log(data.data)
+
 
                         if(data.data.isValid)
                         {
-                            $('#addBusinesse').modal('toggle');
+                            $('#addBusiness').modal('toggle');
 
                             Swal.fire({
                                     position: 'top-end',
                                     icon: 'success',
-                                    title: 'Businesse  add with succes ',
+                                    title: 'Business add with success ',
                                     showConfirmButton: false,
 
 
@@ -258,7 +364,8 @@
                         }else {
 
 
-                            $('#erreurCode').text(data.data.erreurCode);
+                            $('#erreurCode ').text(data.data.erreurCode );
+                            $('#erreurtitle').text(data.data.erreurtitle);
 
 
                         }
@@ -285,34 +392,36 @@
 
         }
 
-        //------------------------ fonction de modification du Businesse
-        function modifierBusinesse(id) {
+
+
+        //------------------------ fonction d' affichage d 'une offre '
+        function modifierBusiness(id) {
 
             $.ajax(
 
                 {
                     type: 'GET',
                     dataType: 'json',
-                    url: "/businesses/modifier/"+id,
+                    url: "/businesss/modifier/"+id,
 
                     success: function (data) {
 
                         console.log(data);
 
-                        $('#myModalLabel').text('Modify Businesse');
+                        $('#myModalLabel').text('Modifier un Business');
 
-                        $('#code').val(data.code);
-                        $('#title').val(data.title);
-
-
+                        $('#code').val(data.date_Business);
+                        $('#title').val(data.time_Business);
 
 
-                        $('#idBusinesse').val(data.id);
 
-                        $("#ajouterBusinesse").hide();
-                        $("#updateBusinesse").show();
 
-                        $('#addBusinesse').modal('toggle');
+                        $('#idBusiness').val(data.id);
+
+                        $("#ajouterBusiness").hide();
+                        $("#updateBusiness").show();
+
+                        $('#addBusiness').modal('toggle');
 
                     }
 
@@ -326,27 +435,28 @@
         }
 
         //------------------------ Update de Annee
-        function updateBusinesse() {
+        function updateBusiness() {
 
             let allValid = true;
-
             let code =  $('#code').val();
             let title =  $('#title').val();
 
-            let id =    $('#idBusinesse').val();
+
+
+            let id =    $('#idBusiness').val();
 
 
 
             if(code ==='')
             {
-                $('#erreurCode').text("Le code   est obligatoire " );
+                $('#erreurCode').text("Required " );
                 allValid = false;
 
             }
 
-            if(title ==='')
+            if(title === '')
             {
-                $('#erreurTitle').text("Le title   est obligatoire " );
+                $('#erreurtitle').text("Required " );
                 allValid = false;
 
             }
@@ -359,14 +469,13 @@
                 $.ajax({
                     dataType: 'json',
                     type: 'POST',
-                    url: "/businesses/update/"+id,
+                    url: "/businesss/update/"+id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 
 
                     data:{
                         code:code,
                         title:title,
-
 
 
                     } ,
@@ -378,12 +487,12 @@
 
                         if(data.data.isValid)
                         {
-                            $('#addBusinesse').modal('toggle');
+                            $('#addBusiness').modal('toggle');
 
                             Swal.fire({
                                     position: 'top-end',
                                     icon: 'success',
-                                    title: 'Businesse   modifié  avec succès',
+                                    title: 'Business   update  with  success',
                                     showConfirmButton: false,
 
 
@@ -395,7 +504,8 @@
 
 
                         }else {
-                            $('#erreurCode').text(data.data.erreurCode);
+                            $('#erreurCode ').text(data.data.erreurCode );
+                            $('#erreurtitle').text(data.data.erreurtitle);
 
 
                         }
@@ -426,13 +536,13 @@
 
         function deleteConfirmation(id) {
             Swal.fire({
-                title: "Voulez-vous vraiment supprimer ce Businesse  ",
+                title: "Do you want to delete this business ",
                 icon: 'question',
                 text: "",
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonText: "Valider",
-                cancelButtonText: "Annuler",
+                confirmButtonText: "Valid",
+                cancelButtonText: "Cancel",
                 reverseButtons: !0
             }).then(function (e) {
 
@@ -441,7 +551,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: "{{url('/businesses/delete')}}/" + id,
+                        url: "{{url('/businesss/delete')}}/" + id,
                         data: {_token: CSRF_TOKEN},
                         dataType: 'JSON',
                         success: function (results) {
@@ -466,18 +576,11 @@
             })
         }
 
-        //------------------------ fonction de fermeture de popup
-
-        function fermerBusinesse() {
-
-            clearData();
-
-            $('#myModalLabel').text('Add a Businesse');
-            $('#addBusinesse').modal('toggle');
 
 
-        }
+
 
 
     </script>
+
 @endsection

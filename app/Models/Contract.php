@@ -20,8 +20,6 @@ class Contract extends Model
     protected $fillable = [
         'date_start',
         'date_end',
-        'date_start_probation',
-        'date_end_probation',
         'status_contract',
         'contract_type_id',
         'employe_id',
@@ -53,21 +51,17 @@ class Contract extends Model
      *
      * @param date $date_start
      * @param date $date_end
-     * @param date $date_start_probation
-     * @param date $date_end_probation
      * @param integer $contract_type_id
      * @param integer $employe_id
      * @return Contract
      */
 
-    public static function addcontract($date_start, $date_end, $date_start_probation , $date_end_probation,
+    public static function addcontract($date_start, $date_end,
                                          $contract_type_id,$employe_id)
     {
         $contract = new Contract();
         $contract->date_start = $date_start;
         $contract->date_end = $date_end;
-        $contract->date_start_probation = $date_start_probation;
-        $contract->date_end_probation = $date_end_probation;
         $contract->status_contract = StatutContrat::EN_COURS;
         $contract->contract_type_id = $contract_type_id;
         $contract->employe_id = $employe_id;
@@ -95,15 +89,14 @@ class Contract extends Model
      * Update d'un Contract
      * @param date $date_start
      * @param date $date_end
-     * @param date $date_start_probation
-     * @param date $date_end_probation
+
      * @param integer $contract_type_id
      * @param integer $employe_id
      * @param int $id
      * @return  Contract
      */
 
-    public static function updatecontract($date_start, $date_end, $date_start_probation , $date_end_probation,
+    public static function updatecontract($date_start, $date_end,
                                            $contract_type_id,$employe_id,
                                           $id)
     {
@@ -113,8 +106,7 @@ class Contract extends Model
 
             'date_start' => $date_start,
             'date_end' => $date_end,
-            'date_start_probation' => $date_start_probation,
-            'date_end_probation' => $date_end_probation,
+
             'contract_type_id' => $contract_type_id,
             'employe_id' => $employe_id,
 
@@ -254,8 +246,6 @@ class Contract extends Model
      */
     public function contracttype()
     {
-
-
         return $this->belongsTo(ContractType::class, 'contract_type_id');
     }
 
@@ -266,10 +256,133 @@ class Contract extends Model
      */
     public function employe()
     {
-
-
         return $this->belongsTo(Employe::class, 'employe_id');
     }
 
+
+
+    /**
+     * Retourne le nombre de jour avant la fin des contrats
+     * @param  int $id
+
+
+     * @return  int $days
+     */
+
+    public static function getNbJourBetween($id){
+
+        $contract = Contract::recherchecontractById($id);
+
+        $diff_in_days = 0;
+
+        $date_du_jour = \Carbon\Carbon::today()->format('d/m/Y');
+
+        $date_end = \Carbon\Carbon::parse($contract->date_end)->translatedFormat('d/m/Y');
+
+        $to = \Carbon\Carbon::createFromFormat('d/m/Y', $date_du_jour);
+
+        $from = \Carbon\Carbon::createFromFormat('d/m/Y', $date_end);
+
+            $diff_in_days = $to->diffInDays($from,false);
+
+        return $diff_in_days;
+
+    }
+
+
+    /**
+     * Retourne la liste des  contrats qui finissent bientot
+
+
+
+     * @return  array $contracts
+     */
+
+    public static function getListeEndingContracts(){
+
+        $array_contracts = array();
+
+        $contracts = Contract::allcontractActifs();
+
+        foreach ($contracts as $contract ){
+
+            $nbjours = Contract::getNbJourBetween($contract->id);
+
+            if(($nbjours < 7) and $nbjours > 0){
+
+                $array_contracts[] = $contract;
+
+            }
+
+        }
+
+        return  $array_contracts;
+
+    }
+
+
+
+
+    /**
+     * Retourne le nom  d 'un employe à partir du contrat
+     * @param  int $id
+     * @return  int $days
+     */
+
+    public static function getNameEmploye  ($id){
+
+        $contract = Contract::recherchecontractById($id);
+        $nom  =  Employe::getNameEmploye($contract->employe_id);
+        return $nom;
+    }
+
+
+
+
+    /**
+     * Interompre un contrat  d'un Contract
+
+     * @param string $motif_interruption
+     * @param integer $status_contract
+
+     * @param int $id
+     * @return  Contract
+     */
+
+    public static function interrompreContract($motif_interruption, $status_contract,
+                                          $id)
+    {
+        return $contract = Contract::findOrFail($id)->update([
+
+            'status_contract' => StatutContrat::INTERROMPU,
+            'date_interruption' => Carbon::today(),
+            'motif_interruption' => $motif_interruption,
+            'id' => $id,
+        ]);
+    }
+
+
+
+    /**
+     * Affiche le nombre total dE CONTRATS
+     * @param  int $classe_id
+
+
+     * @return  int total
+     */
+
+    public static function totalContracts (){
+
+        $total = Contract::where ('status','!=',TypeStatus::SUPPRIME)
+            ->orderBy('id','DESC')
+            ->count()
+        ;
+
+        if($total){
+            return $total;
+        }
+        return 0;
+
+    }
 
 }

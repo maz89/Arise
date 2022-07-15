@@ -187,7 +187,7 @@ class ProfilRole extends Model
         // Verification validite des données
 
 
-        if (isEmpty($profil_id)) {
+        if ($profil_id==='') {
             $erreurprofil_id = "Le profil    est obligatoire" ;
         }
 

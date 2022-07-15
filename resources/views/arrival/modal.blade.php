@@ -1,94 +1,86 @@
-
-<!-- Default Size -->
-<div class="modal animated fadeIn" id="addArrival" tabindex="-1" role="dialog">
-    <div class="modal-dialog " role="document" style="max-width: 700px">
+<div class="modal fade" id="addArrival" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="title" id="myModalLabel">Add   Arrival    </h3>
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="myModalLabel"> Add Arrival </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="modal-body">
-
-
-                <form>
-
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Traveler <span class="text-danger">*</span></label>
-                                <select class="form-control form-select"  name="traveler_id" id="traveler_id" style="width: 100%; height:36px;">
-
-
-                                    <option value="0">    </option>
-
-                                    @php
-
-                                        $travelers = App\Models\Traveler::allTravelerActifs();
-
-                                    @endphp
+            <form action="#" >
+                <div class="modal-body">
+                    <input type="hidden" id="id-field" />
 
 
 
-                                    @foreach( $travelers  as $traveler )
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">Traveler  </label>
+                        <select class="form-control" data-choices data-choices-search-false name="traveler_id" id="traveler_id">
 
-                                        <option value="{{$traveler->id}}">{{$traveler->firstname .' '.$traveler->lastname  }}</option>
+                            @php
+
+                                $travelers = \App\Models\Traveler::allTravelerActifs();
+                            @endphp
+
+                            @foreach($travelers as $traveler )
+
+                            <option value="{{$traveler->id}}">{{$traveler->firstname.' '.$traveler->lastname}} </option>
+
+                            @endforeach
+
+                        </select>
 
 
-                                    @endforeach
+                        <span class="text-danger" id="erreurTraveller">  </span>
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="email-field" class="form-label">Date arrival </label>
+                        <input type="date" id="date_arrival" name="date_arrival" class="form-control" placeholder="Date  Arrival "   />
+                        <span class="text-danger" id="erreurDate">  </span>
 
-
-                                </select>
-
-
-                            </div>
-
-                            <span class="text-danger" id="erreurTraveler_id">  </span>
+                        <div class="invalid-feedback">
+                            Please write a value.
                         </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Flight <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="flight" name="flight">
-                            </div>
 
-                            <span class="text-danger" id="erreurFlight">  </span>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Border <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="border" name="border">
-                            </div>
 
-                            <span class="text-danger" id="erreurBorder">  </span>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Date <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" id="date_arrival" name="date_arrival">
-                            </div>
+                    </div>
 
-                            <span class="text-danger" id="erreurDate_arrival">  </span>
-                        </div>
+                    <div class="mb-3">
+                        <label for="phone-field" class="form-label">Time arrival </label>
+                        <input type="text" id="time_arrival" name="time_arrival" class="form-control" placeholder="Time Arrival " required />
+                        <span class="text-danger" id="erreurTime">  </span>
+
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="phone-field" class="form-label">Flight  </label>
+                        <input type="text" id="flight" name="flight" class="form-control" placeholder="Flight Arrival " required />
+                        <span class="text-danger" id="erreurFlight">  </span>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone-field" class="form-label">Border   </label>
+                        <input type="text" id="border" name="border" class="form-control" placeholder="Border Arrival " required />
+                        <span class="text-danger" id="erreurBorder">  </span>
+
                     </div>
 
 
 
 
-                    <input type="hidden" id="idArrival">
-
-                    <div class="text-center m-t-20">
-                        <button class="btn btn-primary submit-btn" type="button" id="ajouterArrival">Save </button>
-
-                        <button class="btn btn-primary submit-btn" type="button" id="updateArrival">Edit</button>
 
 
-                        <button class="btn btn-danger submit-btn" type="button" id="annulerArrival">Cancel  </button>
-
+                </div>
+                <input type="hidden" id="idArrival">
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="ajouterArrival"><i class="ri-save-line align-bottom me-1"></i> Save    </button>
+                        <button type="button" class="btn btn-success" id="updateArrival"><i class="ri-save-line align-bottom me-1"></i>Update </button>
                     </div>
-                </form>
-
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>

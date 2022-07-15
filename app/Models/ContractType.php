@@ -198,7 +198,7 @@ class ContractType extends Model
         return  $data = [
 
             'isValid' => $isValid,
-            'erreurname' => $erreurName,
+            'erreurName' => $erreurName,
 
         ];
     }

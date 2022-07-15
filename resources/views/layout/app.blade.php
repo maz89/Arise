@@ -1,42 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-layout="vertical" data-layout-style="detached" data-sidebar="light" data-topbar="dark" data-sidebar-size="lg" data-sidebar-image="none">
 
-<!-- Mirrored from preclinic.dreamguystech.com/template/add-leave-type.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 10 Jun 2022 12:22:49 GMT -->
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/img/favicon.png')}}">
-    <meta name="csrf-token" content="{{csrf_token()}}">
+
+    <meta charset="utf-8" />
     <title>@yield('title')</title>
+    <meta name="csrf-token" content="{{csrf_token()}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}">
+
+    @yield('css')
+
+    <!-- Layout config Js -->
+    <script src="{{asset('assets/js/layout.js')}}"></script>
+    <!-- Bootstrap Css -->
+    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="{{asset('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
 
 
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/font-awesome.min.css')}}">
- @yield('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
-    <!--[if lt IE 9]>
-    <script src="{{asset('assets/js/html5shiv.min.js')}}"></script>
-    <script src="{{asset('assets/js/respond.min.js')}}"></script>
-    <![endif]-->
+
+
 </head>
 <body>
-<div class="main-wrapper">
-    @include('layout.components.header')
-    @include('layout.components.sidebar')
-    @include('layout.components.content')
 
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    @include('layout.components.header')
+    @include('layout.components.navbar')
+
+
+
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+
+
+
+    @include('layout.components.content')
+    <!-- end main content-->
 
 </div>
-<div class="sidebar-overlay" data-reff=""></div>
+<!-- END layout-wrapper -->
+
+
+<!-- JAVASCRIPT -->
+<script src="{{asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('assets/libs/simplebar/simplebar.min.js')}}"></script>
+<script src="{{asset('assets/libs/node-waves/waves.min.js')}}"></script>
+<script src="{{asset('assets/libs/feather-icons/feather.min.js')}}"></script>
+<script src="{{asset('assets/js/pages/plugins/lord-icon-2.1.0.js')}}"></script>
+<script src="{{asset('assets/js/plugins.js')}}"></script>
+
+
 <script src="{{asset('assets/js/jquery-3.2.1.min.js')}}"></script>
-<script src="{{asset('assets/js/popper.min.js')}}"></script>
-<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-<script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
 
 @yield('js')
 
+<!-- App js -->
 <script src="{{asset('assets/js/app.js')}}"></script>
+
+
 </body>
 
-<!-- Mirrored from preclinic.dreamguystech.com/template/add-leave-type.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 10 Jun 2022 12:22:49 GMT -->
+
 </html>

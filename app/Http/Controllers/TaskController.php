@@ -69,8 +69,9 @@ class TaskController extends Controller
             // Enregistrement du Task
 
             Task::addTask(
-               $request->libelle,
+
                $request->date_task,
+                $request->libelle,
                $request->description,
                $request->accomplie,
 
@@ -127,8 +128,9 @@ class TaskController extends Controller
         {
             // UpDate du Task
             Task::updateTask(
-                $request->libelle,
                 $request->date_task,
+                $request->libelle,
+
                 $request->description,
                 $request->accomplie,
 

@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('titre')
+@section('libelle')
     Permits - List
 
 @endsection
@@ -8,9 +8,17 @@
 
 @section('css')
 
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/select2.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert/sweetalert.css') }}" />
+    <link href="{{asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
+    <!--datatable css-->
+
+    <link rel="stylesheet" href="{{asset('assets/datatables/1.11.5/css/dataTables.bootstrap5.min.css')}}" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="{{asset('assets/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css')}}" />
+
+    <link rel="stylesheet" href="{{asset('assets/datatables/buttons/2.2.2/css/buttons.dataTables.min.css')}}">
+
+
+
 @endsection
 
 
@@ -20,46 +28,90 @@
 
 
 
-    <div class="page-wrapper">
-        <div class="content">
+
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page libelle -->
             <div class="row">
-                <div class="col-sm-5 col-5">
-                    <h4 class="page-title">Permits </h4>
-                </div>
-                <div class="col-sm-7 col-7 text-right m-b-30">
-                    <a href="" class="btn btn-primary btn-rounded" data-toggle="modal"     data-target="#addPermit"><i class="fa fa-plus"></i> Add Permit</a>
+                <div class="col-12">
+                    <div class="page-libelle-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Permits </h4>
+
+                        <div class="page-libelle-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard  </a></li>
+                                <li class="breadcrumb-item active">Permits </li>
+                            </ol>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+            <!-- end page libelle -->
+
             <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-striped custom-table mb-0 datatable">
-                            <thead>
-                            <tr>
-                                <th style="width: 5%">#</th>
-                                <th>Traveler  </th>
+                <div class="col-lg-12">
+                    <div class="card" id="customerList">
+                        <div class="card-header border-bottom-dashed">
+
+                            <div class="row g-4 align-items-center">
+                                <div class="col-sm">
+                                    <div>
+                                        <h5 class="card-libelle mb-0">List of  Permits </h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div>
+
+                                        <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#addPermit"><i class="ri-add-line align-bottom me-1"></i> Add Permit </button>
+
+                                       <button type="button" class="btn btn-info"><i class="ri-printer-fill align-bottom me-1"></i> Export</button>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div>
+
+                                @if (count($permits) > 0)
+                                    <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
+
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" style="width: 50px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                                </div>
+                                            </th>
+
+                                             <th>Traveler  </th>
                                 <th>Validity </th>
                                 <th>Expiry </th>
 
                                 <th>Days to expiry</th>
 
-                                <th class="text-right"style="width: 10%">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                $i = 1;
+
+                                            <th>Actions</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach( $permits as $permit )
+
+                                            <tr>
+                                                <td data-id="{{$permit->id}}">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
+                                                    </div>
+                                                </td>
 
 
-                            @endphp
-
-                            @foreach( $permits as $permit )
-                                <tr>
-                                    <td data-id="{{$permit->id}}">{{ $i++ }}</td>
-
-                                    <td>  {{ $permit->traveler->firstname .' '.$permit->traveler->lastname }}</td>
-
-
+                                                <td>  {{ $permit->traveler->firstname .' '.$permit->traveler->lastname }}</td>
                                     <td>
 
 
@@ -77,42 +129,87 @@
                                     </td>
 
 
-                                    <td>
+                                                <td>
 
 
 
-                                    </td>
+                                                    <span class="badge badge-pill bg-danger" data-key="t-new">{{\App\Models\Permit::getNbJourBetween($permit->id)}} </span>
 
-                                    <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item modifierPermit" href="#"><i class="fa fa-pencil m-r-5"></i> Edit </a>
+
+                                                </td>
 
 
 
-                                                <a class="dropdown-item supprimerPermit" href="#" ><i class="fa fa-trash-o m-r-5 "></i> Delete </a>
 
 
 
+
+
+                                  <td>
+
+                                                    <ul class="list-inline hstack gap-2 mb-0">
+                                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" libelle="Modifier">
+                                                            <a href="" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn modifierPermit ">
+                                                                <i class="ri-pencil-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" libelle="Supprimer">
+                                                            <a class="text-danger d-inline-block remove-item-btn supprimerPermit" data-bs-toggle="modal" href="">
+                                                                <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
+
+
+
+                                        </tbody>
+                                    </table>
+
+                                    <div class="table-responsive table-card mb-1">
+
+
+
+
+                                        @else
+
+
+                                            <div class="noresult" >
+                                                <div class="text-center">
+
+                                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+
+                                                    <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                    <p class="text-muted"> We did not find any Permits  for you search.</p>
+
+
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
 
 
-                            @endforeach
+                                        @endif
+                                    </div>
 
-                            </tbody>
-                        </table>
+                            </div>
+                            @include('Permit.modal')
+
+
+                        </div>
                     </div>
+
                 </div>
+                <!--end col-->
             </div>
+            <!--end row-->
+
         </div>
-
-
-        @include('permit.modal')
-
+        <!-- container-fluid -->
     </div>
 
 
@@ -121,10 +218,32 @@
 
 
 @section('js')
-    <script src="{{asset('assets/js/select2.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('assets/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+
+
+
+
+    <script src="{{asset('assets/jquery-3.6.0.min.js')}}" ></script>
+
+    <!--datatable js-->
+    <script src="{{asset('assets/datatables/1.11.5/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/1.11.5/js/dataTables.bootstrap5.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/responsive/2.2.9/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/buttons.print.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/buttons/2.2.2/js/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/pdfmake/0.1.53/vfs_fonts.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/pdfmake/0.1.53/pdfmake.min.js')}}"></script>
+    <script src="{{asset('assets/datatables/ajax/libs/jszip/3.1.3/jszip.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/pages/datatables.init.js')}}"></script>
+
+
+
+
+
+    <!-- Sweet Alerts js -->
+    <script src="{{asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
+
 
 
 
@@ -499,4 +618,6 @@
 
 
     </script>
+
+
 @endsection

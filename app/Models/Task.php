@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Types\TypeStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -100,7 +101,7 @@ class Task extends Model
 
         return   $task = Task::findOrFail($id)->update([
 
-            'date' => $date_task,
+            'date_task' => $date_task,
             'libelle' => $libelle,
             'description' => $description,
             'accomplie' => $accomplie,
@@ -148,7 +149,7 @@ class Task extends Model
     {
 
         $task = Task::where('status', '!=', TypeStatus::SUPPRIME)
-            ->where('date', '=', $date_task)
+            ->where('date_task', '=', $date_task)
             ->where('libelle', '=', $libelle)
 
 

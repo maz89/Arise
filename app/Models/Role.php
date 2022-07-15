@@ -177,7 +177,7 @@ class Role extends Model
         // Verification validite des données
 
 
-        if (isEmpty($name)) {
+        if ($name==='') {
             $erreurName = "Le libellé   est obligatoire" ;
         }
 

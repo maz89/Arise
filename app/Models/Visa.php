@@ -201,6 +201,11 @@ class Visa extends Model
             $erreurTraveler = "Requiered" ;
         }
 
+
+       /* elseif ($validity > $expiry) {
+            $erreurValidity = " The validity date cannot be later than the expiration date " ;
+        }*/
+
         elseif (
             $old_visa == null ||
             $old_visa->validity !=$validity||
@@ -248,6 +253,41 @@ class Visa extends Model
 
 
         return $this->belongsTo(Traveler::class, 'traveler_id');
+    }
+
+
+
+    /**
+     * Retourne le nombre de jours
+     * @param  int $id
+
+
+     * @return  int $days
+     */
+
+    public static function getNbJourBetween  ($id){
+
+        $visa = Visa::rechercheVisaById($id);
+
+        $date_du_jour = \Carbon\Carbon::now()->format('d/m/Y');
+        $date = \Carbon\Carbon::parse($visa->expiry)->translatedFormat('d/m/Y');
+
+
+        $mois = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('m');
+        $days = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('d');
+        $annee = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('Y');
+
+        $date_expiry = "$days/$mois/$annee";
+
+
+        $to = \Carbon\Carbon::createFromFormat('d/m/Y', $date_du_jour);
+        $from = \Carbon\Carbon::createFromFormat('d/m/Y', $date_expiry);
+
+        $diff_in_days = $to->diffInDays($from, false);
+
+
+        return $diff_in_days;
+
     }
 
 }

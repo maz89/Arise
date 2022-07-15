@@ -1,21 +1,19 @@
-
-<!-- Default Size -->
-<div class="modal animated fadeIn" id="addPermit" tabindex="-1" role="dialog">
-    <div class="modal-dialog " role="document" style="max-width: 700px">
+<div class="modal fade" id="addPermit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="title" id="myModalLabel">Add  Permit    </h3>
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="myModalLabel"> Add Permit </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <div class="modal-body">
+            <form action="#" >
+                <div class="modal-body">
+                    <input type="hidden" id="id-field" />
 
 
-                <form>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Traveler <span class="text-danger">*</span></label>
-                                <select class="form-control form-select"  name="traveler_id" id="traveler_id" style="width: 100%; height:36px;">
+                  
+                   <div class="mb-3">
+                        <label for="phone-field" class="form-label">Traveler    </label>
+                         <select class="form-control form-select"  name="traveler_id" id="traveler_id" style="width: 100%; height:36px;">
 
 
                                     <option value="0">    </option>
@@ -39,49 +37,46 @@
 
                                 </select>
 
-                            </div>
+                          <span class="text-danger" id="erreurTraveler">  </span>
+                      
 
-                            <span class="text-danger" id="erreurTraveler">  </span>
-                        </div>
-                        <div class="col-sm-12">
+                    </div>   
 
-                            <div class="form-group">
-                                <label>Validity <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" id="validity" name="validity">
-                            </div>
+                    
+ <div class="mb-3">
+                        <label for="phone-field" class="form-label">Validity    </label>
+                        <input type="date" id="validity" name="validity" class="form-control" placeholder="Date of validity  "  />
 
-                            <span class="text-danger" id="erreurValidity">  </span>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Expery <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" id="expery" name="expery">
-                            </div>
+                          <span class="text-danger" id="erreurValidity">  </span>
+                      
 
-                            <span class="text-danger" id="erreurExpery">  </span>
-                        </div>
+                    </div>
 
+                     <div class="mb-3">
+                        <label for="phone-field" class="form-label">Validity    </label>
+                        <input type="text" id="expiry" name="expiry" class="form-control" placeholder="Date of expiry   "  />
+
+                          <span class="text-danger" id="erreurExpiry">  </span>
+                      
 
                     </div>
 
 
 
+                   
 
-                    <input type="hidden" id="idPermit">
+                 
 
-                    <div class="text-center m-t-20">
-                        <button class="btn btn-primary submit-btn" type="button" id="ajouterPermit">Save </button>
-
-                        <button class="btn btn-primary submit-btn" type="button" id="updatePermit">Edit </button>
-
-
-                        <button class="btn btn-danger submit-btn" type="button" id="annulerPermit">Cancel</button>
-
+                </div>
+                <input type="hidden" id="idPermit">
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="ajouterPermit"><i class="ri-save-line align-bottom me-1"></i> Save    </button>
+                        <button type="button" class="btn btn-success" id="updatePermit"><i class="ri-save-line align-bottom me-1"></i>Update </button>
                     </div>
-                </form>
-
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>

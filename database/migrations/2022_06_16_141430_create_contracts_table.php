@@ -18,9 +18,10 @@ class CreateContractsTable extends Migration
 
             $table->date('date_start')->nullable(false);
             $table->date('date_end')->nullable(false);
-            $table->date('date_start_probation')->nullable(true);
-            $table->date('date_end_probation')->nullable(true);
+
             $table->smallInteger('status_contract')->nullable(true);
+            $table->date('date_interruption')->nullable(true);
+            $table->text('motif_interruption')->nullable(true);
 
             $table->bigInteger('contract_type_id')->unsigned()->nullable(false);
             $table->bigInteger('employe_id')->unsigned()->nullable(false);

@@ -26,6 +26,7 @@ class Arrival extends Model
 
 
         'date_arrival',
+        'time_arrival',
         'flight',
         'border',
         'traveler_id',
@@ -54,6 +55,7 @@ class Arrival extends Model
      *
 
      * @param  date $date_arrival
+     * @param  string $time_arrival
      * @param  string $flight
      * @param  string $border
      * @param  integer $traveler_id
@@ -61,12 +63,13 @@ class Arrival extends Model
      * @return Arrival
      */
 
-    public static function addArrival($date_arrival,$flight, $border, $traveler_id  )
+    public static function addArrival($date_arrival,$time_arrival,$flight, $border, $traveler_id  )
     {
         $arrival = new Arrival();
 
 
         $arrival->date_arrival = $date_arrival;
+        $arrival->time_arrival = $time_arrival;
         $arrival->flight = $flight;
         $arrival->border = $border;
         $arrival->traveler_id = $traveler_id;
@@ -92,13 +95,17 @@ class Arrival extends Model
 
     /**
      * Update d'une Arrival
-     * @param  string $libelle
+     * @param  date $date_arrival
+     * @param  string $time_arrival
+     * @param  string $flight
+     * @param  string $border
+     * @param  integer $traveler_id
 
      * @param int $id
      * @return  Arrival
      */
 
-    public static function updateArrival($date_arrival,$flight, $border, $traveler_id , $id)
+    public static function updateArrival($date_arrival,$time_arrival,$flight,$border, $traveler_id , $id)
     {
 
 
@@ -107,6 +114,7 @@ class Arrival extends Model
 
 
             'date_arrival' => $date_arrival,
+            'time_arrival' => $time_arrival,
             'flight' => $flight,
             'border' => $border,
             'traveler_id' => $traveler_id,
@@ -174,15 +182,16 @@ class Arrival extends Model
 
 
      * @param  date $date_arrival
-     * @param  date $flight
-     * @param  date $border
-     * @param  date $traveler_id
+     * @param  string $time_arrival
+     * @param  string $flight
+     * @param  string $border
+     * @param  integer $traveler_id
      * @param  Arrival $old_arrival
 
      * @return  array
      */
 
-    public static function isValid($date_arrival,$flight, $border,  $traveler_id, $old_arrival=null)
+    public static function isValid($date_arrival,$time_arrival,$flight, $border,  $traveler_id, $old_arrival=null)
     {
 
         $data = array();
@@ -190,6 +199,7 @@ class Arrival extends Model
         $isValid = false;
 
         $erreurDate = '';
+        $erreurTime = '';
         $erreurFlight = '';
         $erreurBorder = '';
         $erreurTraveller = '';
@@ -200,22 +210,28 @@ class Arrival extends Model
 
 
         if ($date_arrival ==='') {
-            $erreurDate = "La date d ' arrivée  est obligatoire" ;
+            $erreurDate = "Requiered" ;
         }elseif ($flight===''){
 
-            $erreurFlight = "Le flight   est obligatoire" ;
+            $erreurFlight = "Requiered" ;
+
+        }
+
+        elseif ($time_arrival===''){
+
+            $erreurTime = "Requiered" ;
 
         }
 
         elseif ($border===''){
 
-            $erreurBorder = "Le border    est obligatoire" ;
+            $erreurBorder = "Requiered" ;
 
         }
 
         elseif ($traveler_id=== 0){
 
-            $erreurBorder = "Le  choix du voyageur     est obligatoire" ;
+            $erreurBorder = "Requiered" ;
 
         }
 
@@ -224,8 +240,9 @@ class Arrival extends Model
             $old_arrival->traveler_id !=$traveler_id ||
             $old_arrival->date_arrival !=$date_arrival
 
+
         ){
-            $erreurTraveller = (Arrival::isUnique($traveler_id, $date_arrival))?'Cette arrivée de ce voyageur  existe déja ':'';
+            $erreurTraveller = (Arrival::isUnique($traveler_id, $date_arrival))?'This arrival exist  ':'';
 
             $isValid = (Arrival::isUnique($traveler_id, $date_arrival))?false:true;
         }
@@ -239,6 +256,7 @@ class Arrival extends Model
             $erreurFlight = '';
             $erreurBorder = '';
             $erreurTraveller = '';
+            $erreurTime = '';
 
 
             $isValid = true;
@@ -254,13 +272,15 @@ class Arrival extends Model
             'erreurFlight' => $erreurFlight,
             'erreurBorder' => $erreurBorder,
             'erreurTraveller' => $erreurTraveller,
+            'erreurTime' => $erreurTime,
 
 
         ];
     }
 
+
     /**
-     * Obtenir l
+     * Obtenir le traveler   lié au permit
      *
      */
     public function traveler()
@@ -270,6 +290,29 @@ class Arrival extends Model
         return $this->belongsTo(Traveler::class, 'traveler_id');
     }
 
+
+
+    /**
+     * Retourne la date d' arrivée  du traveller
+     * @param  int $id
+
+
+     * @return  int $days
+     */
+
+    public static function getDateArrive  ($id){
+
+
+        $date = '';
+
+        $arrival = Arrival::rechercheArrivalById($id);
+
+        $date_arrival  =   $date = \Carbon\Carbon::parse($arrival->date_arrival)->translatedFormat('d/m/Y');
+
+        $date = $date_arrival.' '.$arrival->time_arrival;
+        return $date;
+
+    }
 
 
 }

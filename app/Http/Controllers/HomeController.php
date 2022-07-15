@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employe;
+use App\Types\Gender;
 use App\Types\Menu;
+use App\Types\TypeEmploye;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,11 +27,20 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $hommes = Employe::totalEmployeeByGender(Gender::MASCULIN);
+        $filles = Employe::totalEmployeeByGender(Gender::FEMININ);
+        $national = Employe::totalEmployeeByGender(TypeEmploye::NATIONAL);
+        $expatriate = Employe::totalEmployeeByType(TypeEmploye::EXPATRIE);
+
         return view('dashboard')->with(
 
             [
 
-                'active' => $this->active
+                'active' => $this->active,
+                'hommes' => $hommes,
+                'filles' => $filles,
+                'national' => $national,
+                'expatriate' => $expatriate,
             ]
 
         );

@@ -76,8 +76,6 @@ class ContractController extends Controller
             Contract::addContract(
                 $request->date_start,
                 $request->date_end,
-               $request->date_start_probation,
-                   $request->date_end_probation,
 
                 (int)    $request->contract_type_id,
                 (int)    $request->employe_id,
@@ -139,8 +137,6 @@ class ContractController extends Controller
             Contract::updateContract(
                 $request->date_start,
                 $request->date_end,
-                $request->date_start_probation,
-                $request->date_end_probation,
 
                 (int)    $request->contract_type_id,
                 (int)    $request->employe_id,

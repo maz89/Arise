@@ -22,7 +22,7 @@ class CreateEmployesTable extends Migration
             $table->string('usual_name',250)->nullable(true);
             $table->string('emergency_contact',250)->nullable(true);
             $table->date('birth_date')->nullable(true);
-            $table->date('birth_date_correct')->nullable(false);
+            $table->date('birth_date_correct')->nullable(true);
             $table->date('date_debut')->nullable(true);
             $table->date('date_fin')->nullable(true);
             $table->smallInteger('gender')->nullable(true);
@@ -31,7 +31,7 @@ class CreateEmployesTable extends Migration
             $table->string('address',250)->nullable(true);
             $table->string('password',250)->nullable(true);
             $table->string('phone_perso',250)->nullable(true);
-            $table->string('phone_pro',250)->nullable(false);
+            $table->string('phone_pro',250)->nullable(true);
             $table->string('email_perso',250)->nullable(true);
             $table->string('email_pro',250)->nullable(true);
             $table->string('num_cnss',250)->nullable(true);
@@ -39,7 +39,6 @@ class CreateEmployesTable extends Migration
             $table->smallInteger('civile')->nullable(true);
             $table->string('photo',250)->nullable(true);
             $table->bigInteger('contract_id')->nullable(true);
-            $table->bigInteger('categorie_id')->nullable(true);
             $table->bigInteger('former_employer_id')->nullable(true);
             $table->bigInteger('continent_id')->nullable(true);
             $table->bigInteger('region_id')->nullable(true);
@@ -50,6 +49,7 @@ class CreateEmployesTable extends Migration
             $table->bigInteger('niveau_id')->nullable(true);
             $table->bigInteger('contract_type_id')->nullable(true);
             $table->bigInteger('departement_id')->nullable(true);
+            $table->bigInteger('business_id')->nullable(true);
             $table->bigInteger('position_id')->nullable(true);
 
 

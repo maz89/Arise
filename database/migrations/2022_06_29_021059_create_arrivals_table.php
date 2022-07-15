@@ -16,7 +16,8 @@ class CreateArrivalsTable extends Migration
         Schema::create('arrivals', function (Blueprint $table) {
             $table->id();
 
-            $table->datetime('date_arrival')->nullable(true);
+            $table->date('date_arrival')->nullable(true);
+            $table->string('time_arrival')->nullable(true);
             $table->string('flight')->nullable(true);
             $table->string('border')->nullable(true);
             $table->bigInteger('traveler_id')->unsigned()->nullable(false);

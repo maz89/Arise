@@ -45,6 +45,7 @@ class Menu
                      const PERMITS = 24;
                      const NATURE = 25;
                      const DEPARTURE = 26;
+                     const UTILISATEUR = 27;
 
 
 
